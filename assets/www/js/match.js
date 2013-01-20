@@ -1,77 +1,8 @@
-var matchId = 0;
-var team1 = "";
-var team2 = "";
-
-user = new Object()
-user.username = ""
-user.token =  ""
-	user.loggedin = false
-
-function login(){
-	username = $("#username").val()
-	password = $("#password").val()
-	$.post(
-		baseURL + "/api/tokens", 
-			{ "username": username, "password": password },
-			function(data){
-				if(typeof data.token != 'undefined') {
-					user.username = username
-					user.token = data.token
-					user.loggedin = true
-					document.location.href='#match';
-					alert("Logged in successfully")
-				}
-				
-				
-			}, "json")
-			 .error(function() { alert("Incorrect Username Or Password"); })
-}
-
-function logout(){
-	user.username = ""
-	user.token = ""
-	user.loggedin = false
-	document.location.href='#match';
-	checkLogin();
-	alert("Logged Out Successfully")
-}
-
 function getUsername(){
 	return user.username
 }
 function getToken(){
 	return user.token
-}
-
-function pageChange(){
-	$.mobile.loading( 'show', {
-		text: 'Loading',
-		textVisible: true,
-		theme: 'a',
-		html: ""
-	});
-	 setInterval(function(){$.mobile.loading( 'hide')},2000);
-	 checkLogin();
-}
-
-function checkLogin(){
-	if(user.loggedin){
-		$("#loginButton").hide()
-		$("#logoutButton").show()
-		$('[data-role=page]').live('pageshow', function (event, ui) {
-            $("#" + event.target.id).find("[data-role=footer]").load("shared/footerLoggedIn.html", function(){
-                $("#" + event.target.id).find("[data-role=navbar]").navbar();
-            });
-        });
-	} else {
-		$("#loginButton").show();
-		$("#logoutButton").hide();
-		$('[data-role=page]').live('pageshow', function (event, ui) {
-            $("#" + event.target.id).find("[data-role=footer]").load("shared/footerLoggedOut.html", function(){
-                $("#" + event.target.id).find("[data-role=navbar]").navbar();
-            });
-        });
-	}
 }
 
 function getData(){
@@ -86,11 +17,17 @@ function getData(){
 			   for(i=0; i<jsonData.results.length; i++){
 				   matchId = jsonData.results[i].id
 				   var match = jsonData.results[i].county + ":" + jsonData.results[i].team1 + " " + jsonData.results[i].score1 + " " + jsonData.results[i].team2 + " " + jsonData.results[i].score2
-				   list += "<li><a href='#singlematch' onclick='assignMatchId(" + jsonData.results[i].id + ");'>" + match + "</a></li>"
+				   list += "<li><a href='#' data-prefetch onclick='goToSingleMatch(" + jsonData.results[i].id + ");'>" + match + "</a></li>"
 			}
                $("#matchlist").append( list ).listview("refresh");
               
 	})
+}
+
+function goToSingleMatch(id){
+	assignMatchId(id)
+	pageChange()
+	document.location.href='#singlematch'
 }
 
 function assignMatchId(id){
@@ -100,7 +37,12 @@ function assignMatchId(id){
 
 function singleMatch(){
 	pageChange();
-
+	if(user.loggedin){
+		$(".scoreLinks").show()
+	} else {
+		$(".scoreLinks").hide()
+	}
+	
 	$.getJSON(
 			baseURL + '/api/matches/' + matchId,
 			function(jsonData) {

@@ -1,38 +1,71 @@
-var user = "";
-var user.name = "";
-var user.token = "";
+function checkLogin(){
+	if(user.loggedin){
+		$(".loginButton").hide()
+		$(".logoutButton").show()
+		$(".page").find("[data-role=footer]").load("shared/footerLoggedIn.html", function(){
+            $(".footerdiv").find("[data-role=navbar]").navbar();
+        });
+    } else {
+		$(".loginButton").show();
+		$(".logoutButton").hide();
+		$(".page").find("[data-role=footer]").load("shared/footerLoggedOut.html", function(){
+            $(".footerdiv").find("[data-role=navbar]").navbar();
+        });
+	}
+}
 
-function tester(string){
-	alert(string + " func1")
-	$.post(baseUrl + "/api/tokens", { "username": username, "password": password },
+function pageChange(){
+	$.mobile.loading( 'show', {
+		text: 'Loading',
+		textVisible: true,
+		theme: 'a',
+		html: ""
+	});
+	setInterval(function(){$.mobile.loading( 'hide')},2000);
+	
+}
+
+function login(){
+	username = $("#username").val()
+	password = $("#password").val()
+	$.post(
+		baseURL + "/api/tokens", 
+			{ "username": username, "password": password },
 			function(data){
-				alert(data.token)
-				alert(date.message)
-				if(typeof data.token != "undefined"){
+				if(typeof data.token != 'undefined') {
 					user.username = username
 					user.token = data.token
-					alert("Username is: " + username)
+					user.loggedin = true
+					document.location.href='#match';
+					alert("Logged in successfully")
 				}
-			}, "json");
-}
-/*
-function login(username, password){
-	alert('hello')
-	$.post(baseUrl + "/api/tokens", { "username": username, "password": password },
-		function(data){
-			alert(data.token)
-			alert(date.message)
-			if(typeof data.token != "undefined"){
-				user.username = username
-				user.token = data.token
-				alert("Username is: " + username)
-			}
-		}, "json");
+				
+				
+			}, "json")
+			 .error(function() { alert("Incorrect Username Or Password"); })
+			 
+	setInterval(function(){checkLogin() },250)
 }
 
-function logout(){
-	user = ""
-	user.name = ""
+function logout(token){
+	$.ajax({
+	    url: baseURL + "/api/tokens/" + user.token,
+	    type: 'DELETE',
+	    success: function(result) {
+	    	document.location.href='#match';
+	    	checkLogin();
+	    	alert("Logged Out Successfully")
+	    },
+		error: function(result){
+			alert("error")
+		}
+	});
+	
+	user.username = ""
 	user.token = ""
+	user.loggedin = false
+
+//	document.location.href='#match';
+	checkLogin();
+//	alert("Logged Out Successfully")
 }
-*/

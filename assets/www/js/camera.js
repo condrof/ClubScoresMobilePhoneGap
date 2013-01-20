@@ -16,7 +16,7 @@
     //
     function onPhotoDataSuccess(imageData) {
       // Uncomment to view the base64 encoded image data
-      // console.log(imageData);
+       console.log(imageData);
 
       // Get image handle
       //
@@ -30,6 +30,9 @@
       // The inline CSS rules are used to resize the image
       //
       smallImage.src = "data:image/jpeg;base64," + imageData;
+      
+      alert("image success")
+      alert(imageData)
     }
 
     // Called when a photo is successfully retrieved
