@@ -12,8 +12,9 @@
         <script src="js/jquery.validate.js"></script>
 		<script src="js/jquerymobile.js"></script>
 		
+		
 		<script>
-			var baseURL = "http://www.clubscores.ie"
+			var baseURL = "http://192.168.1.10:3000"
 			var user = new Object()
 			user.username = ""
 			user.token =  ""
@@ -32,6 +33,7 @@
    		<script src="js/match.js" ></script>
    		<script src="js/session.js" ></script>
    		<script src="js/score.js" ></script>
+   		<script src="js/county.js" ></script>
    				
 		<script type="text/javascript">
             app.initialize();
@@ -39,12 +41,12 @@
 		        
    		
     </head>
-    <body onload="checkLogin();">
+    <body onload="checkLogin(); getData()">
 
      
         <div data-role="page" id="match"  class="page">
 			<div data-role="header" data-theme="b" data-position="fixed" data-id="myheader">
-				<a href="#match" data-icon="home" class="ui-btn-left">Home</a>
+				<a href="#match" data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
 				<h1>Club Scores</h1>
 				<a href="#login" data-icon="home" class="ui-btn-right loginButton" id="loginButton">Login</a>
 				<a href="#" data-icon="home" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
@@ -165,6 +167,272 @@
     			 <input type="password" name="password" id="password" value=""  />
     			 
     			  <a href="#matches" data-role="button" onclick="login()">Login</a> 
+
+	
+			</div><!-- /content -->
+		
+			<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed" class="footerdiv" id="footerDiv">
+				
+			</div><!-- /footer -->
+		</div><!-- /page -->
+
+<!-- -------------------------------   Add Match    --------------------------------------------- -->
+		
+		<div data-role="page" id="addMatch" class="page" data-position="fixed" data-id="myheader">
+			<div data-role="header" data-theme="b">
+				<a href="#match" data-icon="home" class="ui-btn-left">Home</a> 
+				<h1>Club Scores</h1>
+				<a href="#login" data-icon="home" class="ui-btn-right loginButton" id="loginButton">Login</a>
+				<a href="#" data-icon="home" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
+			</div><!-- /header -->
+				
+			<div data-role="content" id="content">	
+			
+				 <form id="addMatchForm" action="#match" onsubmit="return false" data-ajax="false"> 
+				 	<div data-role="fieldcontain">
+						<label for="addMatchTeam1">Team 1:</label>
+						<input type="text" name="addMatchTeam1" id="addMatchTeam1" value="" required />
+					</div>
+					
+					<div data-role="fieldcontain">
+						<label for="addMatchTeam2">Team 2</label>
+						<input type="text" name="addMatchTeam2" id="addMatchTeam2" value="" required />
+					</div>
+					
+					<div data-role="fieldcontain">
+					    <fieldset data-role="controlgroup">
+					        <legend>Date:</legend>
+					  
+					        <label for="select-choice-day">Day</label>
+					        <select name="select-choice-day" id="select-choice-day">
+					            <option value="01">01</option>
+					            <option value="02">02</option>
+					            <option value="03">03</option>
+					            <option value="04">04</option>
+					            <option value="05">05</option>
+					            <option value="06">06</option>
+					            <option value="07">07</option>
+					            <option value="08">08</option>
+					            <option value="09">09</option>
+					            <option value="10">10</option>
+					            <option value="11">11</option>
+					            <option value="12">12</option>
+					            <option value="13">13</option>
+					            <option value="14">14</option>
+					            <option value="15">15</option>
+					            <option value="16">16</option>
+					            <option value="17">17</option>
+					            <option value="18">18</option>
+					            <option value="19">19</option>
+					            <option value="20">10</option>
+					            <option value="21">21</option>
+					            <option value="22">22</option>
+					            <option value="23">23</option>
+					            <option value="24">24</option>
+					            <option value="25">25</option>
+					            <option value="26">26</option>
+					            <option value="27">27</option>
+					            <option value="28">28</option>
+					            <option value="29">29</option>
+					            <option value="30">30</option>
+					            <option value="31">31</option>
+					            <!-- etc. -->
+					        </select>
+					        
+					        <label for="select-choice-month">Month</label>
+					        <select name="select-choice-month" id="select-choice-month">
+					            <option value="01">January</option>
+					            <option value="02">February</option>
+					            <option value="03">March</option>
+					            <option value="04">April</option>
+					            <option value="05">May</option>
+					            <option value="06">June</option>
+					            <option value="07">July</option>
+					            <option value="08">August</option>
+					            <option value="09">September</option>
+					            <option value="10">October</option>
+					            <option value="11">November</option>
+					            <option value="12">December</option>
+					            <!-- etc. -->
+					        </select>
+					    
+					        <label for="select-choice-year">Year</label>
+					        <select name="select-choice-year" id="select-choice-year">
+					            <option value="2013">2013</option>
+					            <option value="2014">2014</option>
+					            <option value="2015">2015</option>
+					            <!-- etc. -->
+					        </select>
+					        
+					    </fieldset>
+					</div>
+					
+					<div data-role="fieldcontain">
+					<label for="time">Time:</label>
+						 <fieldset data-role="controlgroup" data-type="horizontal"> 
+							<select name="addMatchHour" id="addMatchHour">
+								<option value="00">00</option>
+								<option value="01">01</option>
+								<option value="02">02</option>
+								<option value="03">03</option>
+								<option value="04">04</option>
+								<option value="05">05</option>
+								<option value="06">06</option>
+								<option value="07">07</option>
+								<option value="08">08</option>
+								<option value="09">09</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12" selected>12</option>
+								<option value="13">13</option>
+								<option value="14">14</option>
+								<option value="15">15</option>
+								<option value="16">16</option>
+								<option value="17">17</option>
+								<option value="18">18</option>
+								<option value="19">19</option>
+								<option value="20">20</option>
+								<option value="21">21</option>
+								<option value="22">22</option>
+								<option value="23">23</option>
+								<option value="24">24</option>
+							</select>
+							<select name="addMatchMinutes" id="addMatchMinutes">
+								<option value="00">00</option>
+								<option value="01">01</option>
+								<option value="02">02</option>
+								<option value="03">03</option>
+								<option value="04">04</option>
+								<option value="05">05</option>
+								<option value="06">06</option>
+								<option value="07">07</option>
+								<option value="08">08</option>
+								<option value="09">09</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+								<option value="13">13</option>
+								<option value="14">14</option>
+								<option value="15">15</option>
+								<option value="16">16</option>
+								<option value="17">17</option>
+								<option value="18">18</option>
+								<option value="19">19</option>
+								<option value="20">20</option>
+								<option value="21">21</option>
+								<option value="22">22</option>
+								<option value="23">23</option>
+								<option value="24">24</option>
+								<option value="25">25</option>
+								<option value="26">26</option>
+								<option value="27">27</option>
+								<option value="28">28</option>
+								<option value="29">29</option>
+								<option value="30">30</option>
+								<option value="31">31</option>
+								<option value="32">32</option>
+								<option value="33">33</option>
+								<option value="34">34</option>
+								<option value="35">35</option>
+								<option value="36">36</option>
+								<option value="37">37</option>
+								<option value="38">38</option>
+								<option value="39">39</option>
+								<option value="40">40</option>
+								<option value="41">41</option>
+								<option value="42">42</option>
+								<option value="43">43</option>
+								<option value="44">44</option>
+								<option value="45">45</option>
+								<option value="46">46</option>
+								<option value="47">47</option>
+								<option value="48">48</option>
+								<option value="49">49</option>
+								<option value="50">50</option>
+								<option value="51">51</option>
+								<option value="52">52</option>
+								<option value="53">53</option>
+								<option value="54">54</option>
+								<option value="55">55</option>
+								<option value="56">56</option>
+								<option value="57">57</option>
+								<option value="58">58</option>
+								<option value="59">59</option>
+								<option value="60">60</option>
+							</select>
+						</fieldset>
+					</div>
+					
+					<div data-role="controlgroup">
+						<label for="venue">Venue:</label>
+						<input type="text" name="addMatchVenue" id="addMatchVenue" value="" required />
+					</div>
+					
+					<div data-role="controlgroup">
+						<label for="competition">Competition:</label>
+						<input type="text" name="addMatchCompetition" id="addMatchCompetition" value="" required />
+					</div>
+					
+					<div data-role="controlgroup">
+						<label for="competition">Competition:</label>
+						<select name="county" id="addMatchCounty">
+							<option value="Laois">Laois</option>
+						
+						</select>
+					</div>
+				 
+				 	<input id="addMatchSubmit" type="submit" value="Add Match" onclick="addMatch()" />
+				 	
+				 </form> 
+			</div><!-- /content -->
+			<br /><br /><br /><br />
+			
+			<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed" class="footerdiv" id="footerDiv">
+				
+			</div><!-- /footer -->
+		
+		
+		</div><!-- /page -->
+		
+		
+	<!----------------------------------- ALL COUNTIES ------------------------------------------->	
+		<div data-role="page" id="counties"  class="page">
+			<div data-role="header" data-theme="b" data-position="fixed" data-id="myheader">
+				<a href="#match" data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
+				<h1>Club Scores</h1>
+				<a href="#login" data-icon="home" class="ui-btn-right loginButton" id="loginButton">Login</a>
+				<a href="#" data-icon="home" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
+			</div><!-- /header -->
+		
+			<div data-role="content" id="content">	
+				<h1>Counties</h1>
+				<ul data-role="listview"  data-inset="true" id="countieslist">
+					<li><a href="#singleCounty" onClick="singleCounty('Laois')">Laois</a></li>
+				</ul>
+
+	
+			</div><!-- /content -->
+		
+			<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed" class="footerdiv" id="footerDiv">
+				
+			</div><!-- /footer -->
+		</div><!-- /page -->
+		
+		<!-------------------SINGLE COUNTY -------------------------->
+		
+		<div data-role="page" id="singleCounty"  class="page">
+			<div data-role="header" data-theme="b" data-position="fixed" data-id="myheader">
+				<a href="#match" data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
+				<h1>Club Scores</h1>
+				<a href="#login" data-icon="home" class="ui-btn-right loginButton" id="loginButton">Login</a>
+				<a href="#" data-icon="home" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
+			</div><!-- /header -->
+		
+			<div data-role="content" id="content">	
+				<h1 id="singleCountyHeader">County</h1>
+				<ul data-role="listview"  data-inset="true" id="singleCountyList">
+					
+				</ul>
 
 	
 			</div><!-- /content -->

@@ -1,6 +1,6 @@
  var pictureSource;   // picture source
     var destinationType; // sets the format of returned value 
-
+    var myData = "";
     // Wait for Cordova to connect with the device
     //
     document.addEventListener("deviceready",onDeviceReady,false);
@@ -30,9 +30,8 @@
       // The inline CSS rules are used to resize the image
       //
       smallImage.src = "data:image/jpeg;base64," + imageData;
-      
-      alert("image success")
-      alert(imageData)
+      myData=imageData
+      upload()
     }
 
     // Called when a photo is successfully retrieved
@@ -84,4 +83,26 @@
     // 
     function onFail(message) {
       alert('Failed because: ' + message);
+    }
+    
+    function upload(){
+    	var imageData = myData;
+        $.ajax({
+            type : "POST",
+            url : 'http://192.168.1.10:3000/api/images',
+            data : {
+                image : imageData
+            },
+
+            beforeSend : function() {
+            	alert("Start ajax " + imageData.length);
+            },
+
+            success : function(data) {
+            	alert("Uploaded! " + data);
+            },
+            error : function(request, error) {
+            	alert("Error! " + error);
+            }
+        });
     }

@@ -21,11 +21,12 @@ function pageChange(){
 		theme: 'a',
 		html: ""
 	});
-	setInterval(function(){$.mobile.loading( 'hide')},2000);
+	
 	
 }
 
 function login(){
+	$.mobile.loading( 'hide')
 	username = $("#username").val()
 	password = $("#password").val()
 	$.post(
@@ -36,6 +37,7 @@ function login(){
 					user.username = username
 					user.token = data.token
 					user.loggedin = true
+					checkLogin()
 					document.location.href='#match';
 					alert("Logged in successfully")
 				}
@@ -43,8 +45,7 @@ function login(){
 				
 			}, "json")
 			 .error(function() { alert("Incorrect Username Or Password"); })
-			 
-	setInterval(function(){checkLogin() },250)
+	//setInterval(function(){checkLogin() },250)
 }
 
 function logout(token){

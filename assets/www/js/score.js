@@ -27,7 +27,7 @@ function scoreSubmit(){
 	
 	$.post(
 		baseURL + "/api/scores?auth_token=" + user.token, 
-			{ score : { "user_name": username, "match_id": matchId, "team1goals" : team1goals, "team1points" : team1points, "team2goals" : team2goals, "team2points" :team2points } },
+			{ "score" : { "user_name": username, "match_id": matchId, "team1goals" : team1goals, "team1points" : team1points, "team2goals" : team2goals, "team2points" :team2points } },
 			function(data){
 				if(data.result == 'success') {
 					document.location.href='#singlematch';

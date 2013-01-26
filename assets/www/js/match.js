@@ -6,6 +6,7 @@ function getToken(){
 }
 
 function getData(){
+	//checkLogin();
 	pageChange();
 	
 	var node = document.getElementById("matchlist").innerHTML=''
@@ -22,12 +23,13 @@ function getData(){
                $("#matchlist").append( list ).listview("refresh");
               
 	})
+	.complete(function(){ $.mobile.loading( 'hide')} )
 }
 
 function goToSingleMatch(id){
 	assignMatchId(id)
-	pageChange()
 	document.location.href='#singlematch'
+	singleMatch()
 }
 
 function assignMatchId(id){
@@ -66,12 +68,40 @@ function singleMatch(){
 			var node = $("#singleMatchList").innerHTML=''
 				
             $("#singleMatchList").append( list ).listview("refresh");
-              
-	})
+    })
+	.complete(function(){ $.mobile.loading( 'hide')} )
 }
 
+function addMatch(){
+	var team1 = $("#addMatchTeam1").val()
+	var team2 = $("#addMatchTeam2").val()
+	var venue = $("#venue").val()
+	var competition = $("#competition").val()
+	var day = $("#select-choice-day").val()
+	var month = $("#select-choice-month").val()
+	var year = $("#select-choice-year").val()
+	var hour = $("#addMatchHour").val()
+	var minute = $("#addMatchMinutes").val()
+	var time = hour + ":" + minute
+	var county = $("#addMatchCounty").val()
+	
+	
+	var data = { "user_id": user.username, "team1" : team1, "team2" : team2, "date(1i)" : year, "date(2i)" : month, "date(3i)" : day, "time" : time, "venue" : venue, "competition" : competition, "county_id" : "1" }
+	
+	$.post(
+		baseURL + "/api/matches?auth_token=" + user.token, 
+			{ "match" : { "user_id": user.username, "team1" : team1, "team2" : team2, "date(1i)" : year, "date(2i)" : month, "date(3i)" : day, "time" : time, "venue" : venue, "competition" : competition, "county_id" : county }, "auth_token" : user.token },
+			function(data){
+				if(data.result == 'success') {
+					document.location.href='#match';
+					alert("Match was successfully added")
+					getData()
+				}
+			}, "json")
+			.error( function() { alert("Match could not be added at this time") } )
+			//.complete( function() { singleMatch() } )
+}
+ 
+//$('#addScore').live('pageshow', function () { setupScore(); $("#addScoreForm").validate(); });
 
 
-$('#match').live('pageshow', function () { getData();  });
-$('#singlematch').live('pageshow', function () { singleMatch();  });
-$('#login').live('pageshow', function () { pageChange();  });
