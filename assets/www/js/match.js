@@ -6,7 +6,6 @@ function getToken(){
 }
 
 function getData(){
-	//checkLogin();
 	pageChange();
 	
 	var node = document.getElementById("matchlist").innerHTML=''

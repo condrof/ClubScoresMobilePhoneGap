@@ -1,4 +1,5 @@
 function setupScore() {
+	 pageChange()
 	 var url= baseURL + "/api/matches/" + matchId
 	 $.getJSON(
 		url,
@@ -14,7 +15,7 @@ function setupScore() {
 			$("#team2goals").val(score2[0])
 			$("#team2points").val(score2[1])
 
-	})
+	}).complete(function(){ $.mobile.loading( 'hide')} )
 }
 	 
 function scoreSubmit(){

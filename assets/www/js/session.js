@@ -21,8 +21,35 @@ function pageChange(){
 		theme: 'a',
 		html: ""
 	});
-	
-	
+}
+
+function register(){
+	$.mobile.loading( 'hide')
+	username = $("#regUsername").val()
+	email = $("#regEmail").val()
+	password = $("#regPassword").val()
+	confirmPassword = $("#regConfirmPassword").val()
+	$.ajax({
+            type:"POST",
+            beforeSend: function (request)
+            {
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            },
+            url: baseURL + "/api/users",
+            data: { "username": username, "email" : email, "password": password, "password_confirmation" : confirmPassword },
+            success: function(data) {
+            	user.username = username
+				user.token = data.results.token
+				user.loggedin = true
+				checkLogin()
+				document.location.href='#match';
+				alert("Logged in successfully")
+            },
+            error: function(data){
+            	alert(data.message)
+            }
+        });
+
 }
 
 function login(){
@@ -58,7 +85,7 @@ function logout(token){
 	    	alert("Logged Out Successfully")
 	    },
 		error: function(result){
-			alert("error")
+			alert("Could not log you out at this time.")
 		}
 	});
 	

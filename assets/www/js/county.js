@@ -1,11 +1,5 @@
 function singleCounty(county){
-	$.mobile.loading( 'show', {
-		text: 'Loading',
-		textVisible: true,
-		theme: 'a',
-		html: ""
-	});
-	
+	pageChange()
 	var node = document.getElementById("singleCountyList").innerHTML=''
 		$.getJSON(
 				baseURL + '/api/counties/' + county,
@@ -22,3 +16,6 @@ function singleCounty(county){
 		.error(function(){ alert("ERROR. Could not retrieve information at this time") } )
 		.complete(function(){ $.mobile.loading( 'hide') } )
 }
+
+//$('#singleCounty').live('pageshow', function () { pageChange() });
+

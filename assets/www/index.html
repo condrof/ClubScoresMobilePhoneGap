@@ -14,7 +14,7 @@
 		
 		
 		<script>
-			var baseURL = "http://192.168.1.10:3000"
+			var baseURL = "http://www.clubscores.ie"
 			var user = new Object()
 			user.username = ""
 			user.token =  ""
@@ -48,8 +48,8 @@
 			<div data-role="header" data-theme="b" data-position="fixed" data-id="myheader">
 				<a href="#match" data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
 				<h1>Club Scores</h1>
-				<a href="#login" data-icon="home" class="ui-btn-right loginButton" id="loginButton">Login</a>
-				<a href="#" data-icon="home" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
+				<a href="#login" class="ui-btn-right loginButton" id="loginButton">Login</a>
+				<a href="#" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()" data-icon="delete">Logout</a>
 			</div><!-- /header -->
 		
 			<div data-role="content" id="content">	
@@ -78,10 +78,7 @@
 			</div><!-- /header -->
 		
 			<div data-role="content" id="content">	
-				<div data-role="controlgroup" data-type="horizontal" class="scoreLinks">
-					<a id="addScoreButton" href="#addScore" data-role="button" >Add Score</a> 
-					<input type="button" id="addPhotoButton" onclick="capturePhoto();" value="Add Photo" /> <br>
-				</div>
+				<a id="addScoreButton" href="#addScore" data-role="button" onClick="pageChange();">Add Score</a> 
  
 				
 				<h1 id="singleMatchTeam1">Team 1</h1>
@@ -106,8 +103,8 @@
 			<div data-role="header" data-theme="b">
 				<a href="#match" data-icon="home" class="ui-btn-left">Home</a> 
 				<h1>Club Scores</h1>
-				<a href="#login" data-icon="home" class="ui-btn-right loginButton" id="loginButton">Login</a>
-				<a href="#" data-icon="home" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
+				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
+				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
 			</div><!-- /header -->
 				
 			<div data-role="content" id="content">	
@@ -154,8 +151,8 @@
 			<div data-role="header" data-theme="b">
 				<a href="#match" data-icon="home" class="ui-btn-left">Home</a>
 				<h1>Club Scores</h1>
-				<a href="#login" data-icon="home" class="ui-btn-right loginButton" id="loginButton">Login</a>
-				<a href="#" data-icon="home" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
+				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
+				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
 			</div><!-- /header -->
 		
 			<div data-role="content" id="content">	
@@ -175,6 +172,45 @@
 				
 			</div><!-- /footer -->
 		</div><!-- /page -->
+		
+		
+<!-- -------------------------------   Register    --------------------------------------------- -->
+		
+		<div data-role="page" id="register" class="page" data-position="fixed" data-id="myheader">
+
+			<div data-role="header" data-theme="b">
+				<a href="#match" data-icon="home" class="ui-btn-left">Home</a>
+				<h1>Club Scores</h1>
+				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
+				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
+			</div><!-- /header -->
+		
+			<div data-role="content" id="content">	
+				<h1>Register</h1>
+				 <label for="regUsername">Username:</label>
+    			 <input type="text" name="regUsername" id="regUsername" value=""  />
+    			 
+    			 <label for="regEmail">Email:</label>
+    			 <input type="text" name="regEmail" id="regEmail" value=""  />
+    			
+    			 <label for="regPassword">Password:</label>
+    			 <input type="password" name="regPassword" id="regPassword" value=""  />
+    			 
+    			 <label for="regConfirmPassword">Password:</label>
+    			 <input type="password" name="regConfirmPassword" id="regConfirmPassword" value=""  />
+    			 
+    			  <a href="#matches" data-role="button" onclick="register()">Register</a>
+    			  
+    			  
+    			  <br /><br /><br /><br /> 
+
+	
+			</div><!-- /content -->
+		
+			<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed" class="footerdiv" id="footerDiv">
+				
+			</div><!-- /footer -->
+		</div><!-- /page -->
 
 <!-- -------------------------------   Add Match    --------------------------------------------- -->
 		
@@ -182,8 +218,8 @@
 			<div data-role="header" data-theme="b">
 				<a href="#match" data-icon="home" class="ui-btn-left">Home</a> 
 				<h1>Club Scores</h1>
-				<a href="#login" data-icon="home" class="ui-btn-right loginButton" id="loginButton">Login</a>
-				<a href="#" data-icon="home" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
+				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
+				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
 			</div><!-- /header -->
 				
 			<div data-role="content" id="content">	
@@ -377,7 +413,38 @@
 						<label for="competition">Competition:</label>
 						<select name="county" id="addMatchCounty">
 							<option value="Laois">Laois</option>
-						
+							<option value="Galway">Galway</option>
+							<option value="Leitrim">Leitrim</option>
+							<option value="Mayo">Mayo</option>
+							<option value="Roscommon">Roscommon</option>
+							<option value="Sligo">Sligo</option>
+							<option value="Clare">Clare</option>
+							<option value="Cork">Cork</option>
+							<option value="Kerry">Kerry</option>
+							<option value="Limerick">Limerick</option>
+							<option value="Tipperary">Tipperary</option>
+							<option value="Waterford">Waterford</option>
+							<option value="Antrim">Antrim</option>
+							<option value="Armagh">Armagh</option>
+							<option value="Cavan">Cavan</option>
+							<option value="Derry">Derry</option>
+							<option value="Donegal">Donegal</option>
+							<option value="Down">Down</option>
+							<option value="Fermanagh">Fermanagh</option>
+							<option value="Monaghan">Monaghan</option>
+							<option value="Tyrone">Tyrone</option>
+							<option value="Carlow">Carlow</option>
+							<option value="Dublin">Dublin</option>
+							<option value="Kildare">Kildare</option>
+							<option value="Kilkenny">Kilkenny</option>
+							<option value="Longford">Longford</option>
+							<option value="Louth">Louth</option>
+							<option value="Meath">Meath</option>
+							<option value="Offaly">Offaly</option>
+							<option value="Westmeath">Westmeath</option>
+							<option value="Wexford">Wexford</option>
+							<option value="Wicklow">Wicklow</option>
+							
 						</select>
 					</div>
 				 
@@ -400,14 +467,45 @@
 			<div data-role="header" data-theme="b" data-position="fixed" data-id="myheader">
 				<a href="#match" data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
 				<h1>Club Scores</h1>
-				<a href="#login" data-icon="home" class="ui-btn-right loginButton" id="loginButton">Login</a>
-				<a href="#" data-icon="home" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
+				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
+				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
 			</div><!-- /header -->
 		
 			<div data-role="content" id="content">	
 				<h1>Counties</h1>
 				<ul data-role="listview"  data-inset="true" id="countieslist">
 					<li><a href="#singleCounty" onClick="singleCounty('Laois')">Laois</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Galway')">Galway</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Leitrim')">Leitrim</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Mayo')">Mayo</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Roscommon')">Roscommon</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Sligo')">Sligo</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Clare')">Clare</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Cork')">Cork</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Kerry')">Kerry</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Limerick')">Limerick</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Tipperary')">Tipperary</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Waterford')">Waterford</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Antrim')">Antrim</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Armagh')">Armagh</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Cavan')">Cavan</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Derry')">Derry</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Donegal')">Donegal</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Down')">Down</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Fermanagh')">Fermanagh</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Monaghan')">Monaghan</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Tyrone')">Tyrone</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Carlow')">Carlow</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Dublin')">Dublin</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Kildare')">Kildare</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Kilkenny')">Kilkenny</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Longford')">Longford</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Louth')">Louth</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Meath')">Meath</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Offaly')">Offaly</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Westmeath')">Westmeath</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Wexford')">Wexford</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Wicklow')">Wicklow</a></li>
 				</ul>
 
 	
@@ -424,8 +522,8 @@
 			<div data-role="header" data-theme="b" data-position="fixed" data-id="myheader">
 				<a href="#match" data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
 				<h1>Club Scores</h1>
-				<a href="#login" data-icon="home" class="ui-btn-right loginButton" id="loginButton">Login</a>
-				<a href="#" data-icon="home" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
+				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
+				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
 			</div><!-- /header -->
 		
 			<div data-role="content" id="content">	
