@@ -15,7 +15,11 @@ function setupScore() {
 			$("#team2goals").val(score2[0])
 			$("#team2points").val(score2[1])
 
-	}).complete(function(){ $.mobile.loading( 'hide')} )
+	}).success(function(){
+		document.location.href="#addScore"
+		pageChange()
+		$.mobile.loading( 'hide')
+	} )
 }
 	 
 function scoreSubmit(){

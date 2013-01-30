@@ -6,7 +6,7 @@ function getToken(){
 }
 
 function getData(){
-	pageChange();
+	checkLogin();
 	
 	var node = document.getElementById("matchlist").innerHTML=''
 
@@ -49,8 +49,12 @@ function singleMatch(){
 			function(jsonData) {
 				team1 = jsonData.results.team1
 				team2 = jsonData.results.team2
+				venue = jsonData.results.venue
+				time = jsonData.results.time
 				document.getElementById("singleMatchTeam1").innerHTML = jsonData.results.team1 + " " + jsonData.results.score1,
 				document.getElementById("singleMatchTeam2").innerHTML = jsonData.results.team2 + " " + jsonData.results.score2			   	
+				document.getElementById("singleMatchTime").innerHTML = "Time: " + time
+				document.getElementById("singleMatchVenue").innerHTML = "Venue: " + venue			   	
 	})
 	
 	var url = baseURL + '/api/scores/' + matchId
@@ -74,8 +78,8 @@ function singleMatch(){
 function addMatch(){
 	var team1 = $("#addMatchTeam1").val()
 	var team2 = $("#addMatchTeam2").val()
-	var venue = $("#venue").val()
-	var competition = $("#competition").val()
+	var venue = $("#addMatchVenue").val()
+	var competition = $("#addMatchCompetition").val()
 	var day = $("#select-choice-day").val()
 	var month = $("#select-choice-month").val()
 	var year = $("#select-choice-year").val()
@@ -85,7 +89,6 @@ function addMatch(){
 	var county = $("#addMatchCounty").val()
 	
 	
-	var data = { "user_id": user.username, "team1" : team1, "team2" : team2, "date(1i)" : year, "date(2i)" : month, "date(3i)" : day, "time" : time, "venue" : venue, "competition" : competition, "county_id" : "1" }
 	
 	$.post(
 		baseURL + "/api/matches?auth_token=" + user.token, 
@@ -97,7 +100,10 @@ function addMatch(){
 					getData()
 				}
 			}, "json")
-			.error( function() { alert("Match could not be added at this time") } )
+			.error( function(data) { 
+				alert(data.message)
+				alert("Match could not be added at this time") 
+		} )
 			//.complete( function() { singleMatch() } )
 }
  

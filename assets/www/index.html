@@ -48,7 +48,7 @@
 			<div data-role="header" data-theme="b" data-position="fixed" data-id="myheader">
 				<a href="#match" data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
 				<h1>Club Scores</h1>
-				<a href="#login" class="ui-btn-right loginButton" id="loginButton">Login</a>
+				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
 				<a href="#" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()" data-icon="delete">Logout</a>
 			</div><!-- /header -->
 		
@@ -73,21 +73,26 @@
 			<div data-role="header" data-theme="b">
 				<a href="#match" data-icon="home" class="ui-btn-left">Home</a> 
 				<h1>Club Scores</h1>
-				<a href="#login" data-icon="home" class="ui-btn-right loginButton" id="loginButton">Login</a>
-				<a href="#" data-icon="home" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
+				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
+				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
 			</div><!-- /header -->
 		
-			<div data-role="content" id="content">	
-				<a id="addScoreButton" href="#addScore" data-role="button" onClick="pageChange();">Add Score</a> 
- 
+			<div data-role="content" id="content">
+				<div class="addScoreButton">
+					<button id="addScoreButton" onClick="setupScore()">Add Score</button>
+				</div>
 				
 				<h1 id="singleMatchTeam1">Team 1</h1>
 				<h1 id="singleMatchTeam2">Team 2</h1>
+				<h1 id="singleMatchTime">Time</h1>
+				<h1 id="singleMatchVenue">Venue</h1>
 				
 				<ul data-role="listview"  data-inset="true" id="singleMatchList">
 					
 				</ul>
-
+				<br />
+				<br />
+				<br />
 	
 			</div><!-- /content -->
 		
@@ -412,7 +417,8 @@
 					<div data-role="controlgroup">
 						<label for="competition">Competition:</label>
 						<select name="county" id="addMatchCounty">
-							<option value="Laois">Laois</option>
+							<option value="InterCounty">Inter County</option>
+							<option value="Colleges">Colleges</option>
 							<option value="Galway">Galway</option>
 							<option value="Leitrim">Leitrim</option>
 							<option value="Mayo">Mayo</option>
@@ -437,6 +443,7 @@
 							<option value="Dublin">Dublin</option>
 							<option value="Kildare">Kildare</option>
 							<option value="Kilkenny">Kilkenny</option>
+							<option value="Laois">Laois</option>
 							<option value="Longford">Longford</option>
 							<option value="Louth">Louth</option>
 							<option value="Meath">Meath</option>
@@ -474,18 +481,26 @@
 			<div data-role="content" id="content">	
 				<h1>Counties</h1>
 				<ul data-role="listview"  data-inset="true" id="countieslist">
-					<li><a href="#singleCounty" onClick="singleCounty('Laois')">Laois</a></li>
+					<li data-role="list-divider">Misc</li>
+					<li><a href="#singleCounty" onClick="singleCounty('InterCounty')">Inter County</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Colleges')">Colleges</a></li>
+				
+					<li data-role="list-divider">Connacht</li>
 					<li><a href="#singleCounty" onClick="singleCounty('Galway')">Galway</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Leitrim')">Leitrim</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Mayo')">Mayo</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Roscommon')">Roscommon</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Sligo')">Sligo</a></li>
+					
+					<li data-role="list-divider">Munster</li>
 					<li><a href="#singleCounty" onClick="singleCounty('Clare')">Clare</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Cork')">Cork</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Kerry')">Kerry</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Limerick')">Limerick</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Tipperary')">Tipperary</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Waterford')">Waterford</a></li>
+					
+					<li data-role="list-divider">Ulster</li>
 					<li><a href="#singleCounty" onClick="singleCounty('Antrim')">Antrim</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Armagh')">Armagh</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Cavan')">Cavan</a></li>
@@ -495,10 +510,13 @@
 					<li><a href="#singleCounty" onClick="singleCounty('Fermanagh')">Fermanagh</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Monaghan')">Monaghan</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Tyrone')">Tyrone</a></li>
+					
+					<li data-role="list-divider">Leinster</li>
 					<li><a href="#singleCounty" onClick="singleCounty('Carlow')">Carlow</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Dublin')">Dublin</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Kildare')">Kildare</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Kilkenny')">Kilkenny</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('Laois')">Laois</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Longford')">Longford</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Louth')">Louth</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Meath')">Meath</a></li>

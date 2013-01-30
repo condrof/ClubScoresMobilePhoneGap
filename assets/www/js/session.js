@@ -2,12 +2,14 @@ function checkLogin(){
 	if(user.loggedin){
 		$(".loginButton").hide()
 		$(".logoutButton").show()
+		$(".addScoreButton").show()
 		$(".page").find("[data-role=footer]").load("shared/footerLoggedIn.html", function(){
             $(".footerdiv").find("[data-role=navbar]").navbar();
         });
     } else {
 		$(".loginButton").show();
 		$(".logoutButton").hide();
+		$(".addScoreButton").hide();
 		$(".page").find("[data-role=footer]").load("shared/footerLoggedOut.html", function(){
             $(".footerdiv").find("[data-role=navbar]").navbar();
         });
@@ -43,10 +45,10 @@ function register(){
 				user.loggedin = true
 				checkLogin()
 				document.location.href='#match';
-				alert("Logged in successfully")
+				alert("Registered successfully")
             },
             error: function(data){
-            	alert(data.message)
+            	alert("User could not be created at this time. Email address or username might already be registered")
             }
         });
 
