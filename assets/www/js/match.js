@@ -101,7 +101,6 @@ function addMatch(){
 				}
 			}, "json")
 			.error( function(data) { 
-				alert(data.message)
 				alert("Match could not be added at this time") 
 		} )
 			//.complete( function() { singleMatch() } )

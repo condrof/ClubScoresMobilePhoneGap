@@ -117,3 +117,14 @@ h1 {
 .hideit {
 	display:none;
 }
+
+.ui-content
+{
+    margin-bottom:75px; /* Set this to whatever your footer size is... */
+}
+
+.ui-footer {
+    position: absolute !important;
+    bottom: 0;
+    width: 100%;
+}

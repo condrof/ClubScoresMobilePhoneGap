@@ -21,6 +21,8 @@ package com.fergalcondron.clubscores;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.webkit.WebSettings;
+
 import org.apache.cordova.*;
 
 public class ClubScores extends DroidGap
@@ -29,7 +31,12 @@ public class ClubScores extends DroidGap
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        super.setStringProperty("loadingDialog", "Loading Club Scores...");
         super.loadUrl("file:///android_asset/www/index.html");
+
+        WebSettings settings = super.appView.getSettings();
+        settings.setBuiltInZoomControls(true);
+        settings.setSupportZoom(true);
     }
 }
 

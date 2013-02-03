@@ -4,7 +4,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="format-detection" content="telephone=no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <meta name="viewport" content="user-scalable=yes, initial-scale=1, maximum-scale=5, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         
         <link rel="stylesheet" href="css/jquery.mobile-1.2.0.css" />
 		<script type="text/javascript" src="js/index.js"></script>
@@ -45,7 +45,7 @@
 
      
         <div data-role="page" id="match"  class="page">
-			<div data-role="header" data-theme="b" data-position="fixed" data-id="myheader">
+			<div data-role="header" data-theme="b"  data-id="myheader">
 				<a href="#match" data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
 				<h1>Club Scores</h1>
 				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
@@ -61,14 +61,14 @@
 	
 			</div><!-- /content -->
 		
-			<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed" class="footerdiv" id="footerDiv">
+			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
 				
 			</div><!-- /footer -->
 		</div><!-- /page -->
 		
 <!-- --------------------------------SINGLE MATCH ----------------------------------------- -->
 		
-		<div data-role="page" id="singlematch" class="page" data-position="fixed" data-id="myheader">
+		<div data-role="page" id="singlematch" class="page"  data-id="myheader">
 		
 			<div data-role="header" data-theme="b">
 				<a href="#match" data-icon="home" class="ui-btn-left">Home</a> 
@@ -96,7 +96,7 @@
 	
 			</div><!-- /content -->
 		
-			<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed" class="footerdiv" id="footerDiv">
+			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
 				
 			</div><!-- /footer -->
 		</div><!-- /page -->
@@ -104,7 +104,7 @@
 		
 <!-- -------------------------------   Add Score    --------------------------------------------- -->
 		
-		<div data-role="page" id="addScore" class="page" data-position="fixed" data-id="myheader">
+		<div data-role="page" id="addScore" class="page"  data-id="myheader">
 			<div data-role="header" data-theme="b">
 				<a href="#match" data-icon="home" class="ui-btn-left">Home</a> 
 				<h1>Club Scores</h1>
@@ -141,7 +141,7 @@
 			</div><!-- /content -->
 			<br /><br /><br /><br />
 			
-			<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed" class="footerdiv" id="footerDiv">
+			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
 				
 			</div><!-- /footer -->
 		
@@ -151,7 +151,7 @@
 
 <!-- -------------------------------   Login    --------------------------------------------- -->
 		
-		<div data-role="page" id="login" class="page" data-position="fixed" data-id="myheader">
+		<div data-role="page" id="login" class="page"  data-id="myheader">
 
 			<div data-role="header" data-theme="b">
 				<a href="#match" data-icon="home" class="ui-btn-left">Home</a>
@@ -168,12 +168,15 @@
     			 <label for="password">Password:</label>
     			 <input type="password" name="password" id="password" value=""  />
     			 
-    			  <a href="#matches" data-role="button" onclick="login()">Login</a> 
+    			  <a href="#matches" data-role="button" onclick="login()" data-transition="pop">Login</a> 
 
+				<br />
+				<br />
+				<br />
 	
 			</div><!-- /content -->
 		
-			<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed" class="footerdiv" id="footerDiv">
+			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
 				
 			</div><!-- /footer -->
 		</div><!-- /page -->
@@ -181,7 +184,7 @@
 		
 <!-- -------------------------------   Register    --------------------------------------------- -->
 		
-		<div data-role="page" id="register" class="page" data-position="fixed" data-id="myheader">
+		<div data-role="page" id="register" class="page"  data-id="myheader">
 
 			<div data-role="header" data-theme="b">
 				<a href="#match" data-icon="home" class="ui-btn-left">Home</a>
@@ -212,14 +215,14 @@
 	
 			</div><!-- /content -->
 		
-			<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed" class="footerdiv" id="footerDiv">
+			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
 				
 			</div><!-- /footer -->
 		</div><!-- /page -->
 
 <!-- -------------------------------   Add Match    --------------------------------------------- -->
 		
-		<div data-role="page" id="addMatch" class="page" data-position="fixed" data-id="myheader">
+		<div data-role="page" id="addMatch" class="page"  data-id="myheader">
 			<div data-role="header" data-theme="b">
 				<a href="#match" data-icon="home" class="ui-btn-left">Home</a> 
 				<h1>Club Scores</h1>
@@ -399,7 +402,6 @@
 								<option value="57">57</option>
 								<option value="58">58</option>
 								<option value="59">59</option>
-								<option value="60">60</option>
 							</select>
 						</fieldset>
 					</div>
@@ -415,10 +417,11 @@
 					</div>
 					
 					<div data-role="controlgroup">
-						<label for="competition">Competition:</label>
+						<label for="competition">County:</label>
 						<select name="county" id="addMatchCounty">
 							<option value="InterCounty">Inter County</option>
 							<option value="Colleges">Colleges</option>
+							<option value="International">International</option>
 							<option value="Galway">Galway</option>
 							<option value="Leitrim">Leitrim</option>
 							<option value="Mayo">Mayo</option>
@@ -461,7 +464,7 @@
 			</div><!-- /content -->
 			<br /><br /><br /><br />
 			
-			<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed" class="footerdiv" id="footerDiv">
+			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
 				
 			</div><!-- /footer -->
 		
@@ -471,7 +474,7 @@
 		
 	<!----------------------------------- ALL COUNTIES ------------------------------------------->	
 		<div data-role="page" id="counties"  class="page">
-			<div data-role="header" data-theme="b" data-position="fixed" data-id="myheader">
+			<div data-role="header" data-theme="b"  data-id="myheader">
 				<a href="#match" data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
 				<h1>Club Scores</h1>
 				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
@@ -484,6 +487,7 @@
 					<li data-role="list-divider">Misc</li>
 					<li><a href="#singleCounty" onClick="singleCounty('InterCounty')">Inter County</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Colleges')">Colleges</a></li>
+					<li><a href="#singleCounty" onClick="singleCounty('International')">International</a></li>
 				
 					<li data-role="list-divider">Connacht</li>
 					<li><a href="#singleCounty" onClick="singleCounty('Galway')">Galway</a></li>
@@ -529,7 +533,7 @@
 	
 			</div><!-- /content -->
 		
-			<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed" class="footerdiv" id="footerDiv">
+			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
 				
 			</div><!-- /footer -->
 		</div><!-- /page -->
@@ -537,7 +541,7 @@
 		<!-------------------SINGLE COUNTY -------------------------->
 		
 		<div data-role="page" id="singleCounty"  class="page">
-			<div data-role="header" data-theme="b" data-position="fixed" data-id="myheader">
+			<div data-role="header" data-theme="b"  data-id="myheader">
 				<a href="#match" data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
 				<h1>Club Scores</h1>
 				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
@@ -553,7 +557,7 @@
 	
 			</div><!-- /content -->
 		
-			<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed" class="footerdiv" id="footerDiv">
+			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
 				
 			</div><!-- /footer -->
 		</div><!-- /page -->
