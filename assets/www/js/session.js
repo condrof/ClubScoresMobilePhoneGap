@@ -1,5 +1,5 @@
 function checkLogin(){
-	if(user.loggedin){
+	if(	window.localStorage.getItem("username") != null){
 		$(".loginButton").hide()
 		$(".logoutButton").show()
 		$(".addScoreButton").show()
@@ -16,6 +16,7 @@ function checkLogin(){
 	}
 }
 
+
 function pageChange(){
 	$.mobile.loading( 'show', {
 		text: 'Loading',
@@ -27,6 +28,7 @@ function pageChange(){
 
 function register(){
 	$.mobile.loading( 'hide')
+	$("#register").validate()
 	username = $("#regUsername").val()
 	email = $("#regEmail").val()
 	password = $("#regPassword").val()
@@ -40,6 +42,9 @@ function register(){
             url: baseURL + "/api/users",
             data: { "username": username, "email" : email, "password": password, "password_confirmation" : confirmPassword },
             success: function(data) {
+           		window.localStorage.setItem("username", username);
+			    window.localStorage.setItem("token", data.results.token);
+			    window.localStorage.setItem("loggedIn", true);
             	user.username = username
 				user.token = data.results.token
 				user.loggedin = true
@@ -63,7 +68,10 @@ function login(){
 			{ "username": username, "password": password },
 			function(data){
 				if(typeof data.token != 'undefined') {
-					user.username = username
+				    window.localStorage.setItem("username", username);
+				    window.localStorage.setItem("token", data.token);
+				    window.localStorage.setItem("loggedIn", true);
+				    user.username = username
 					user.token = data.token
 					user.loggedin = true
 					checkLogin()
@@ -77,11 +85,12 @@ function login(){
 	//setInterval(function(){checkLogin() },250)
 }
 
-function logout(token){
+function logout(){
 	$.ajax({
-	    url: baseURL + "/api/tokens/" + user.token,
+	    url: baseURL + "/api/tokens/" + window.localStorage.getItem("token"),
 	    type: 'DELETE',
 	    success: function(result) {
+	    	window.localStorage.clear();
 	    	document.location.href='#match';
 	    	checkLogin();
 	    	alert("Logged Out Successfully")
@@ -94,7 +103,8 @@ function logout(token){
 	user.username = ""
 	user.token = ""
 	user.loggedin = false
-
+	window.localStorage.clear();
+	
 //	document.location.href='#match';
 	checkLogin();
 //	alert("Logged Out Successfully")

@@ -1,8 +1,8 @@
 function getUsername(){
-	return user.username
+	return window.localStorage.getItem("username")
 }
 function getToken(){
-	return user.token
+	return window.localStorage.getItem("token")
 }
 
 function getData(){
@@ -16,8 +16,8 @@ function getData(){
 			   var list=""
 			   for(i=0; i<jsonData.results.length; i++){
 				   matchId = jsonData.results[i].id
-				   var match = jsonData.results[i].county + ":" + jsonData.results[i].team1 + " " + jsonData.results[i].score1 + " " + jsonData.results[i].team2 + " " + jsonData.results[i].score2
-				   list += "<li><a href='#' data-prefetch onclick='goToSingleMatch(" + jsonData.results[i].id + ");'>" + match + "</a></li>"
+				   var match = jsonData.results[i].team1 + " " + jsonData.results[i].score1 + " " + jsonData.results[i].team2 + " " + jsonData.results[i].score2
+				   list += "<li><h3><a href='#' data-prefetch onclick='goToSingleMatch(" + jsonData.results[i].id + ");'>" + match + "</h3>" + jsonData.results[i].county + "; " + jsonData.results[i].date + "</a></li>"
 			}
                $("#matchlist").append( list ).listview("refresh");
               
@@ -51,10 +51,12 @@ function singleMatch(){
 				team2 = jsonData.results.team2
 				venue = jsonData.results.venue
 				time = jsonData.results.time
+				date = jsonData.results.date
 				document.getElementById("singleMatchTeam1").innerHTML = jsonData.results.team1 + " " + jsonData.results.score1,
 				document.getElementById("singleMatchTeam2").innerHTML = jsonData.results.team2 + " " + jsonData.results.score2			   	
 				document.getElementById("singleMatchTime").innerHTML = "Time: " + time
-				document.getElementById("singleMatchVenue").innerHTML = "Venue: " + venue			   	
+				document.getElementById("singleMatchVenue").innerHTML = "Venue: " + venue
+				document.getElementById("singleMatchDate").innerHTML = "Date: " + date				   	
 	})
 	
 	var url = baseURL + '/api/scores/' + matchId

@@ -31,7 +31,7 @@
       //
       smallImage.src = "data:image/jpeg;base64," + imageData;
       myData=imageData
-      upload()
+      //upload()
     }
 
     // Called when a photo is successfully retrieved

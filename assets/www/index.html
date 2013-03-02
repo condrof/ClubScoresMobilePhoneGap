@@ -47,6 +47,7 @@
         <div data-role="page" id="match"  class="page">
 			<div data-role="header" data-theme="b"  data-id="myheader">
 				<a href="#match" data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
+				
 				<h1>Club Scores</h1>
 				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
 				<a href="#" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()" data-icon="delete">Logout</a>
@@ -84,8 +85,9 @@
 				
 				<h1 id="singleMatchTeam1">Team 1</h1>
 				<h1 id="singleMatchTeam2">Team 2</h1>
-				<h1 id="singleMatchTime">Time</h1>
-				<h1 id="singleMatchVenue">Venue</h1>
+				<h2 id="singleMatchTime">Time</h2>
+				<h2 id="singleMatchVenue">Venue</h2>
+				<h2 id="singleMatchDate">Date</h2>
 				
 				<ul data-role="listview"  data-inset="true" id="singleMatchList">
 					
@@ -195,20 +197,21 @@
 		
 			<div data-role="content" id="content">	
 				<h1>Register</h1>
+				<form id="register">
 				 <label for="regUsername">Username:</label>
-    			 <input type="text" name="regUsername" id="regUsername" value=""  />
+    			 <input type="text" name="regUsername" id="regUsername" value="" required />
     			 
     			 <label for="regEmail">Email:</label>
-    			 <input type="text" name="regEmail" id="regEmail" value=""  />
+    			 <input type="text" name="regEmail" id="regEmail" value="" required />
     			
     			 <label for="regPassword">Password:</label>
-    			 <input type="password" name="regPassword" id="regPassword" value=""  />
+    			 <input type="password" name="regPassword" id="regPassword" value="" required />
     			 
-    			 <label for="regConfirmPassword">Password:</label>
-    			 <input type="password" name="regConfirmPassword" id="regConfirmPassword" value=""  />
+    			 <label for="regConfirmPassword">Password Confirmation:</label>
+    			 <input type="password" name="regConfirmPassword" id="regConfirmPassword" value="" required />
     			 
-    			  <a href="#matches" data-role="button" onclick="register()">Register</a>
-    			  
+    			  <a href="#matches" data-role="button" onclick="register()" >Register</a>
+    			 </form>
     			  
     			  <br /><br /><br /><br /> 
 
