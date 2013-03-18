@@ -90,22 +90,25 @@ function addMatch(){
 	var time = hour + ":" + minute
 	var county = $("#addMatchCounty").val()
 	
+	$("#addMatchForm").validate()
 	
-	
-	$.post(
-		baseURL + "/api/matches?auth_token=" + user.token, 
-			{ "match" : { "user_id": user.username, "team1" : team1, "team2" : team2, "date(1i)" : year, "date(2i)" : month, "date(3i)" : day, "time" : time, "venue" : venue, "competition" : competition, "county_id" : county }, "auth_token" : user.token },
-			function(data){
-				if(data.result == 'success') {
-					document.location.href='#match';
-					alert("Match was successfully added")
-					getData()
-				}
-			}, "json")
-			.error( function(data) { 
-				alert("Match could not be added at this time") 
-		} )
-			//.complete( function() { singleMatch() } )
+	if($("#addMatchForm").valid()){
+		$.post(
+			baseURL + "/api/matches?auth_token=" + getToken(), 
+				{ "match" : { "user_id": getUsername(), "team1" : team1, "team2" : team2, "date(1i)" : year, "date(2i)" : month, "date(3i)" : day, "time" : time, "venue" : venue, "competition" : competition, "county_id" : county }, "auth_token" : getToken() },
+				function(data){
+					if(data.result == 'success') {
+						goToSingleMatch(data.results.id)
+						//document.location.href='#match';
+						alert("Match was successfully added")
+						//getData()
+					}
+				}, "json")
+				.error( function(data) { 
+					alert("Match could not be added at this time") 
+			} )
+				//.complete( function() { singleMatch() } )
+		}
 }
  
 //$('#addScore').live('pageshow', function () { setupScore(); $("#addScoreForm").validate(); });

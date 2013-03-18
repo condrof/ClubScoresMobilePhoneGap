@@ -28,20 +28,20 @@ function scoreSubmit(){
 	var team2goals = $("#team2goals").val()
 	var team2points = $("#team2points").val()
 	
-	var data = { "user_name": username, "match_id": matchId, "team1goals" : team1goals, "team1points" : team1points, "team2goals" : team2goals, "team2points" :team2points }
-	
-	$.post(
-		baseURL + "/api/scores?auth_token=" + user.token, 
-			{ "score" : { "user_name": username, "match_id": matchId, "team1goals" : team1goals, "team1points" : team1points, "team2goals" : team2goals, "team2points" :team2points } },
-			function(data){
-				if(data.result == 'success') {
+	$("#addScoreForm").validate();
+	if ($("#addScoreForm").valid()){
+		var data = {"score":{ "user_name": getUsername(), "match_id": matchId, "team1goals" : team1goals, "team1points" : team1points, "team2goals" : team2goals, "team2points" : team2points }}
+		var url = baseURL + "/api/scores?auth_token=" + getToken()
+		$.post( url, data, 
+				function(data){
+					if(data.result == 'success') {
 					document.location.href='#singlematch';
 					alert("Score was successfully added")
 					singleMatch()
-				}
+					}
 			}, "json")
 			.error( function() { alert("Score could not be added at this time") } )
-			//.complete( function() { singleMatch() } )
+	}
 }
  
 $('#addScore').live('pageshow', function () { setupScore(); $("#addScoreForm").validate(); });

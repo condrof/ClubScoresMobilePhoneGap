@@ -14,7 +14,8 @@
 		
 		
 		<script>
-			var baseURL = "http://www.clubscores.ie"
+			//var baseURL = "http://www.clubscores.ie"
+			var baseURL = "http://192.168.1.16:3000"
 			var user = new Object()
 			user.username = ""
 			user.token =  ""
@@ -136,7 +137,8 @@
 						<label for="team2points">Team 2 Points:</label>
 						<input type="number" name="team2points" id="team2points" value="" required />
 					</div>
-				 
+				 	
+				 	<br />
 				 	<input id="addScoreSubmit" type="submit" value="Submit Score" onclick="scoreSubmit()" />
 				 	
 				 </form> 
@@ -164,6 +166,7 @@
 		
 			<div data-role="content" id="content">	
 				<h1>Login</h1>
+				<form id="loginForm">
 				 <label for="username">Username:</label>
     			 <input type="text" name="username" id="username" value=""  />
     			
@@ -171,7 +174,8 @@
     			 <input type="password" name="password" id="password" value=""  />
     			 
     			  <a href="#matches" data-role="button" onclick="login()" data-transition="pop">Login</a> 
-
+				</form>
+				
 				<br />
 				<br />
 				<br />
