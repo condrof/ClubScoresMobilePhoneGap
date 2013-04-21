@@ -52,9 +52,6 @@ function register(){
            		window.localStorage.setItem("username", username);
 			    window.localStorage.setItem("token", data.results.token);
 			    window.localStorage.setItem("loggedIn", true);
-            	user.username = username
-				user.token = data.results.token
-				user.loggedin = true
 				checkLogin()
 				document.location.href='#match';
 				$.mobile.loading( 'hide')
@@ -85,10 +82,7 @@ function login(){
 				    window.localStorage.setItem("username", username);
 				    window.localStorage.setItem("token", data.token);
 				    window.localStorage.setItem("loggedIn", true);
-				    user.username = username
-					user.token = data.token
-					user.loggedin = true
-					checkLogin()
+				    checkLogin()
 					document.location.href='#match';
 					$.mobile.loading( 'hide')
 					alert("Logged in successfully")
@@ -114,16 +108,15 @@ function logout(){
 	    	window.localStorage.clear();
 	    	document.location.href='#match';
 	    	checkLogin();
+	    	$.mobile.loading( 'hide'); 
 	    	alert("Logged Out Successfully")
 	    },
 		error: function(result){
+			$.mobile.loading( 'hide'); 
 			alert("Could not log you out at this time.")
 		}
 	});
-	
-	user.username = ""
-	user.token = ""
-	user.loggedin = false
+
 	window.localStorage.clear();
 	
 	checkLogin();

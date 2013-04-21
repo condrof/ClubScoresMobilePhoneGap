@@ -13,12 +13,8 @@
 		<script src="js/jquerymobile.js"></script>
 		
 		<script>
-			//var baseURL = "http://www.clubscores.ie"
-			var baseURL = "http://192.168.1.16:3000"
-			var user = new Object()
-			user.username = ""
-			user.token =  ""
-			user.loggedin = false
+			var baseURL = "http://www.clubscores.ie"
+			//var baseURL = "http://192.168.1.16:3000"
 			var matchId = 0;
 			var team1 = "";
 			var team2 = "";
@@ -43,6 +39,7 @@
     </head>
     <body onload="checkLogin(); getData()">
 
+<!----------------------------------MATCH ------------------------------------------------------>
      
         <div data-role="page" id="match"  class="page">
 			<div data-role="header" data-theme="b"  data-id="myheader">
@@ -70,7 +67,7 @@
 			</div><!-- /footer -->
 		</div><!-- /page -->
 		
-<!-- --------------------------------SINGLE MATCH ----------------------------------------- -->
+<!-----------------------------------SINGLE MATCH ---------------------------------------------->
 		
 		<div data-role="page" id="singlematch" class="page"  data-id="myheader">
 		
@@ -107,7 +104,7 @@
 		</div><!-- /page -->
 		
 		
-<!-- -------------------------------   Add Score    --------------------------------------------- -->
+<!----------------------------------   Add Score    -------------------------------------------->
 		
 		<div data-role="page" id="addScore" class="page"  data-id="myheader">
 			<div data-role="header" data-theme="b">
@@ -159,7 +156,7 @@
 		</div><!-- /page -->
 
 
-<!-- -------------------------------   Login    --------------------------------------------- -->
+<!----------------------------------   Login    ------------------------------------------------>
 		
 		<div data-role="page" id="login" class="page"  data-id="myheader">
 
@@ -194,7 +191,7 @@
 		</div><!-- /page -->
 		
 		
-<!-- -------------------------------   Register    --------------------------------------------- -->
+<!----------------------------------   Register    --------------------------------------------->
 		
 		<div data-role="page" id="register" class="page"  data-id="myheader">
 
@@ -233,7 +230,7 @@
 			</div><!-- /footer -->
 		</div><!-- /page -->
 
-<!-- -------------------------------   Add Match    --------------------------------------------- -->
+<!----------------------------------   Add Match    -------------------------------------------->
 		
 		<div data-role="page" id="addMatch" class="page"  data-id="myheader">
 			<div data-role="header" data-theme="b">
@@ -485,7 +482,7 @@
 		</div><!-- /page -->
 		
 		
-	<!----------------------------------- ALL COUNTIES ------------------------------------------->	
+<!----------------------------------- ALL COUNTIES --------------------------------------------->	
 		<div data-role="page" id="counties"  class="page">
 			<div data-role="header" data-theme="b"  data-id="myheader">
 				<a href="#match" data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
@@ -495,9 +492,6 @@
 			</div><!-- /header -->
 		
 			<div data-role="content" id="content">	
-				<div class="addMatchButton">
-					<a type="button" class="loggedIn addMatchButton" href="#addMatch" >Add Match</a>
-				</div>
 				<h1>Counties</h1>
 				<ul data-role="listview"  data-inset="true" id="countieslist">
 					<li data-role="list-divider">Misc</li>
@@ -554,7 +548,7 @@
 			</div><!-- /footer -->
 		</div><!-- /page -->
 		
-		<!-------------------SINGLE COUNTY -------------------------->
+<!----------------------------------- SINGLE COUNTY -------------------------------------------->
 		
 		<div data-role="page" id="singleCounty"  class="page">
 			<div data-role="header" data-theme="b"  data-id="myheader">
@@ -565,9 +559,6 @@
 			</div><!-- /header -->
 		
 			<div data-role="content" id="content">	
-				<div class="addMatchButton">
-					<a type="button" class="loggedIn addMatchButton" href="#addMatch" >Add Match</a>
-				</div>
 				<h1 id="singleCountyHeader">County</h1>
 				<ul data-role="listview"  data-inset="true" id="singleCountyList">
 					

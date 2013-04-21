@@ -26,6 +26,12 @@ function getData(){
 }
 
 function goToSingleMatch(id){
+	$.mobile.loading( 'show', {
+		text: 'Loading',
+		textVisible: true,
+		theme: 'a',
+		html: ""
+	});
 	assignMatchId(id)
 	document.location.href='#singlematch'
 	singleMatch()
@@ -37,8 +43,7 @@ function assignMatchId(id){
 
 
 function singleMatch(){
-	pageChange();
-	if(user.loggedin){
+	if(getUsername != null){
 		$(".scoreLinks").show()
 	} else {
 		$(".scoreLinks").hide()
