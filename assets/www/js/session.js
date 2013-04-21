@@ -3,6 +3,7 @@ function checkLogin(){
 		$(".loginButton").hide()
 		$(".logoutButton").show()
 		$(".addScoreButton").show()
+		$(".loggedIn").show()
 		$(".page").find("[data-role=footer]").load("shared/footerLoggedIn.html", function(){
             $(".footerdiv").find("[data-role=navbar]").navbar();
         });
@@ -10,6 +11,7 @@ function checkLogin(){
 		$(".loginButton").show();
 		$(".logoutButton").hide();
 		$(".addScoreButton").hide();
+		$(".loggedIn").hide()
 		$(".page").find("[data-role=footer]").load("shared/footerLoggedOut.html", function(){
             $(".footerdiv").find("[data-role=navbar]").navbar();
         });
@@ -27,7 +29,12 @@ function pageChange(){
 }
 
 function register(){
-	$.mobile.loading( 'hide')
+	$.mobile.loading( 'show', {
+			text: 'Registering',
+			textVisible: true,
+			theme: 'a',
+			html: ""
+		});
 	$("#register").validate()
 	username = $("#regUsername").val()
 	email = $("#regEmail").val()
@@ -50,9 +57,11 @@ function register(){
 				user.loggedin = true
 				checkLogin()
 				document.location.href='#match';
+				$.mobile.loading( 'hide')
 				alert("Registered successfully")
             },
             error: function(data){
+            	$.mobile.loading( 'hide')
             	alert("User could not be created at this time. Email address or username might already be registered")
             }
         });
@@ -60,7 +69,12 @@ function register(){
 }
 
 function login(){
-	$.mobile.loading( 'hide')
+	$.mobile.loading( 'show', {
+			text: 'Logging In',
+			textVisible: true,
+			theme: 'a',
+			html: ""
+		});
 	username = $("#username").val()
 	password = $("#password").val()
 	$.post(
@@ -76,16 +90,23 @@ function login(){
 					user.loggedin = true
 					checkLogin()
 					document.location.href='#match';
+					$.mobile.loading( 'hide')
 					alert("Logged in successfully")
 				}
 				
 				
 			}, "json")
-			 .error(function() { alert("Incorrect Username Or Password"); })
+			 .error(function() { $.mobile.loading( 'hide'); alert("Incorrect Username Or Password"); })
 	//setInterval(function(){checkLogin() },250)
 }
 
 function logout(){
+	$.mobile.loading( 'show', {
+		text: 'Signing Out',
+		textVisible: true,
+		theme: 'a',
+		html: ""
+	});
 	$.ajax({
 	    url: baseURL + "/api/tokens/" + window.localStorage.getItem("token"),
 	    type: 'DELETE',
@@ -105,7 +126,5 @@ function logout(){
 	user.loggedin = false
 	window.localStorage.clear();
 	
-//	document.location.href='#match';
 	checkLogin();
-//	alert("Logged Out Successfully")
 }

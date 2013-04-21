@@ -19,11 +19,10 @@
 
 package com.fergalcondron.clubscores;
 
-import android.app.Activity;
+import org.apache.cordova.DroidGap;
+
 import android.os.Bundle;
 import android.webkit.WebSettings;
-
-import org.apache.cordova.*;
 
 public class ClubScores extends DroidGap
 {

@@ -93,19 +93,31 @@ function addMatch(){
 	$("#addMatchForm").validate()
 	
 	if($("#addMatchForm").valid()){
+		$.mobile.loading( 'show', {
+			text: 'Creating Match',
+			textVisible: true,
+			theme: 'a',
+			html: ""
+		});
+		$( ".addMatchSubmit" ).addClass('ui-disabled');
 		$.post(
 			baseURL + "/api/matches?auth_token=" + getToken(), 
 				{ "match" : { "user_id": getUsername(), "team1" : team1, "team2" : team2, "date(1i)" : year, "date(2i)" : month, "date(3i)" : day, "time" : time, "venue" : venue, "competition" : competition, "county_id" : county }, "auth_token" : getToken() },
 				function(data){
+					console.log(data)
 					if(data.result == 'success') {
 						goToSingleMatch(data.results.id)
 						//document.location.href='#match';
+						$.mobile.loading( 'hide')
 						alert("Match was successfully added")
+						$( ".addMatchSubmit" ).removeClass('ui-disabled');
 						//getData()
 					}
 				}, "json")
 				.error( function(data) { 
+					$.mobile.loading( 'hide')
 					alert("Match could not be added at this time") 
+					$( ".addMatchSubmit" ).removeClass('ui-disabled');
 			} )
 				//.complete( function() { singleMatch() } )
 		}
