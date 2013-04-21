@@ -7,8 +7,10 @@ function singleCounty(county){
 				   var list=""
 				   document.getElementById("singleCountyHeader").innerHTML = jsonData.county.name
 				   for(i=0; i<jsonData.results.length; i++){
-					  var match = jsonData.results[i].team1 + " " + jsonData.results[i].score1 + " " + jsonData.results[i].team2 + " " + jsonData.results[i].score2
-					  list += "<li><a href='#' onclick='goToSingleMatch(" + jsonData.results[i].id + ");'>" + match + "</a></li>"
+					   matchId = jsonData.results[i].id
+					   var match = jsonData.results[i].team1 + " " + jsonData.results[i].score1 + " " + jsonData.results[i].team2 + " " + jsonData.results[i].score2
+					   list += "<li><h3><a href='#' data-prefetch onclick='goToSingleMatch(" + jsonData.results[i].id + ");'>" + match + "</h3>" + jsonData.results[i].date + "; Competition: " + jsonData.results[i].competition + "</a></li>"
+				
 				   }
 	               $("#singleCountyList").append( list ).listview("refresh");
 	              

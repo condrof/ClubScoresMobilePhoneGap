@@ -6,6 +6,12 @@ function getToken(){
 }
 
 function getData(){
+	$.mobile.loading( 'show', {
+		text: 'Loading',
+		textVisible: true,
+		theme: 'a',
+		html: ""
+	});
 	checkLogin();
 	
 	var node = document.getElementById("matchlist").innerHTML=''
@@ -22,7 +28,10 @@ function getData(){
                $("#matchlist").append( list ).listview("refresh");
               
 	})
-	.complete(function(){ $.mobile.loading( 'hide')} )
+	.complete(function(){ 
+		document.location.href = "#match"
+		$.mobile.loading( 'hide')
+		} )
 }
 
 function goToSingleMatch(id){
@@ -57,11 +66,14 @@ function singleMatch(){
 				venue = jsonData.results.venue
 				time = jsonData.results.time
 				date = jsonData.results.date
+				competition = jsonData.results.competition
 				document.getElementById("singleMatchTeam1").innerHTML = jsonData.results.team1 + " " + jsonData.results.score1,
 				document.getElementById("singleMatchTeam2").innerHTML = jsonData.results.team2 + " " + jsonData.results.score2			   	
 				document.getElementById("singleMatchTime").innerHTML = "Time: " + time
 				document.getElementById("singleMatchVenue").innerHTML = "Venue: " + venue
-				document.getElementById("singleMatchDate").innerHTML = "Date: " + date				   	
+				document.getElementById("singleMatchDate").innerHTML = "Date: " + date	
+				document.getElementById("singleMatchCompetition").innerHTML = "Competition: " + competition	
+				
 	})
 	
 	var url = baseURL + '/api/scores/' + matchId
