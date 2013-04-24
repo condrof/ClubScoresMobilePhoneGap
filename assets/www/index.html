@@ -13,6 +13,7 @@
 		<script src="js/jquerymobile.js"></script>
 		
 		<script>
+			//switch baseURL between test and live
 			var baseURL = "http://www.clubscores.ie"
 			//var baseURL = "http://192.168.1.16:3000"
 			var matchId = 0;
@@ -115,10 +116,6 @@
 			</div><!-- /header -->
 				
 			<div data-role="content" id="content">
-			
-				<div class="addMatchButton">
-					<a type="button" class="loggedIn addMatchButton" href="#addMatch" >Add Match</a>
-				</div>
 			
 				 <form id="addScoreForm" action="#match" onsubmit="return false" data-ajax="false"> 
 				 	<div data-role="fieldcontain">
