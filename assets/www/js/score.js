@@ -35,6 +35,12 @@ function scoreSubmit(){
 	
 	$("#addScoreForm").validate();
 	if ($("#addScoreForm").valid()){
+		$.mobile.loading( 'show', {
+			text: 'Adding Score',
+			textVisible: true,
+			theme: 'a',
+			html: ""
+		});
 		var data = {"score":{ "user_name": getUsername(), "match_id": matchId, "team1goals" : team1goals, "team1points" : team1points, "team2goals" : team2goals, "team2points" : team2points }}
 		var url = baseURL + "/api/v2/scores?auth_token=" + getToken()
 		$.post( url, data, 
@@ -43,12 +49,14 @@ function scoreSubmit(){
 					document.location.href='#singlematch';
 					$(".flash").text("Score was added successfully")
 					$(".flashMessage").show()
+					$.mobile.loading( 'hide')
 					singleMatch()
 					}
 			}, "json")
 			.error( function() { 
 				$(".flash").text("Score could not be added at this time")
 				$(".flashMessage").show()
+				$.mobile.loading( 'hide')
 			} )
 	}
 }
