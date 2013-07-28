@@ -5,6 +5,10 @@ function getToken(){
 	return window.localStorage.getItem("token")
 }
 
+function getMatchId(){
+	return window.localStorage.getItem("matchId")
+}
+
 function getData(){
 	$.mobile.loading( 'show', {
 		text: 'Loading',
@@ -12,25 +16,40 @@ function getData(){
 		theme: 'a',
 		html: ""
 	});
-	checkLogin();
-	
-	var node = document.getElementById("matchlist").innerHTML=''
+	checkLogin()
+	getList("matches", "Recent Matches")
+}
 
-	$.getJSON(
-			baseURL + '/api/matches',
+function getList(url, heading){
+	var node = document.getElementById("matchlist").innerHTML=''
+		$("#matchHeader").text(heading)
+		$.getJSON(baseURL + "/api/v2/" + url,
 			function(jsonData) {
-			   var list=""
-			   for(i=0; i<jsonData.results.length; i++){
-				   matchId = jsonData.results[i].id
-				   var match = jsonData.results[i].team1 + " " + jsonData.results[i].score1 + " " + jsonData.results[i].team2 + " " + jsonData.results[i].score2
-				   list += "<li><h3><a href='#' data-prefetch onclick='goToSingleMatch(" + jsonData.results[i].id + ");'>" + match + "</h3>" + jsonData.results[i].county + "; " + jsonData.results[i].date + "</a></li>"
-			}
-               $("#matchlist").append( list ).listview("refresh");
-              
-	})
-	.complete(function(){ 
-		document.location.href = "#match"
-		$.mobile.loading( 'hide')
+				if(jsonData.result === "error"){
+					$(".flash").text(jsonData.results.message)
+					$(".flashMessage").show()
+				} else {
+				    var list=""
+				    	$.each(jsonData.results, function(i, field){
+				    		var date = new Date(i)
+							var showDate = date.getDay() + "/" + date.getMonth() + "/" + date.getFullYear()
+							list += "<li data-theme='a' data-role='list-divider' role='heading'><h1>" + showDate + "</h1></li>"
+				            for(i=0; i<field.length; i++){
+							   matchId = field[i].id
+							   var status = field[i].finished ? "Full Time" : "Latest"
+							   var match = field[i].team1 + " " + field[i].score1 + "<br />" + field[i].team2 + " " + field[i].score2
+							   list += "<li><a href='#' data-prefetch onclick='goToSingleMatch(" + field[i].id + ");'>" + match + "<br />Venue: " + field[i].venue + "<br />County: " + field[i].county + "<br />Throw In: "+ field[i].time + "<br />Status: " + status + "</a></li>"
+						    }
+				          });
+					    $("#matchlist").append( list ).listview("refresh");
+				}
+		})
+		.error(function(){
+			alert("Server not responding. Please try again");
+		})
+		.complete(function(){ 
+			document.location.href = "#match"
+			$.mobile.loading( 'hide')
 		} )
 }
 
@@ -52,14 +71,15 @@ function assignMatchId(id){
 
 
 function singleMatch(){
+	ga_storage._trackPageview('/index', 'Single Match Page');
 	if(getUsername != null){
 		$(".scoreLinks").show()
 	} else {
 		$(".scoreLinks").hide()
 	}
-	
+	window.localStorage.setItem("matchId", matchId);
 	$.getJSON(
-			baseURL + '/api/matches/' + matchId,
+			baseURL + '/api/v2/matches/' + matchId,
 			function(jsonData) {
 				team1 = jsonData.results.team1
 				team2 = jsonData.results.team2
@@ -67,16 +87,24 @@ function singleMatch(){
 				time = jsonData.results.time
 				date = jsonData.results.date
 				competition = jsonData.results.competition
-				document.getElementById("singleMatchTeam1").innerHTML = jsonData.results.team1 + " " + jsonData.results.score1,
+				finished = jsonData.results.finished
+				if(finished){
+					$(".addScoreButton").hide()
+					$(".addImageButton").show()
+				} else {
+					$(".addScoreButton").show()
+					$(".addImageButton").hide()
+				}
+				document.getElementById("singleMatchTeam1").innerHTML = jsonData.results.team1 + " " + jsonData.results.score1
 				document.getElementById("singleMatchTeam2").innerHTML = jsonData.results.team2 + " " + jsonData.results.score2			   	
 				document.getElementById("singleMatchTime").innerHTML = "Time: " + time
 				document.getElementById("singleMatchVenue").innerHTML = "Venue: " + venue
 				document.getElementById("singleMatchDate").innerHTML = "Date: " + date	
 				document.getElementById("singleMatchCompetition").innerHTML = "Competition: " + competition	
-				
+				document.getElementById("singleMatchStatus").innerHTML = finished ? "Status: Full Time" : "Status: Latest"	
 	})
 	
-	var url = baseURL + '/api/scores/' + matchId
+	var url = baseURL + '/api/v2/scores/' + matchId
 	var list=""
 	var node = document.getElementById("singleMatchList").innerHTML=''
 			
@@ -94,52 +122,27 @@ function singleMatch(){
 	.complete(function(){ $.mobile.loading( 'hide')} )
 }
 
-function addMatch(){
-	var team1 = $("#addMatchTeam1").val()
-	var team2 = $("#addMatchTeam2").val()
-	var venue = $("#addMatchVenue").val()
-	var competition = $("#addMatchCompetition").val()
-	var day = $("#select-choice-day").val()
-	var month = $("#select-choice-month").val()
-	var year = $("#select-choice-year").val()
-	var hour = $("#addMatchHour").val()
-	var minute = $("#addMatchMinutes").val()
-	var time = hour + ":" + minute
-	var county = $("#addMatchCounty").val()
-	
-	$("#addMatchForm").validate()
-	
-	if($("#addMatchForm").valid()){
-		$.mobile.loading( 'show', {
-			text: 'Creating Match',
-			textVisible: true,
-			theme: 'a',
-			html: ""
-		});
-		$( ".addMatchSubmit" ).addClass('ui-disabled');
-		$.post(
-			baseURL + "/api/matches?auth_token=" + getToken(), 
-				{ "match" : { "user_id": getUsername(), "team1" : team1, "team2" : team2, "date(1i)" : year, "date(2i)" : month, "date(3i)" : day, "time" : time, "venue" : venue, "competition" : competition, "county_id" : county }, "auth_token" : getToken() },
-				function(data){
-					console.log(data)
-					if(data.result == 'success') {
-						goToSingleMatch(data.results.id)
-						//document.location.href='#match';
-						$.mobile.loading( 'hide')
-						alert("Match was successfully added")
-						$( ".addMatchSubmit" ).removeClass('ui-disabled');
-						//getData()
-					}
-				}, "json")
-				.error( function(data) { 
-					$.mobile.loading( 'hide')
-					alert("Match could not be added at this time") 
-					$( ".addMatchSubmit" ).removeClass('ui-disabled');
-			} )
-				//.complete( function() { singleMatch() } )
-		}
+function setupListener(){
+	$(":jqmData(role='page')").bind("pagecreate", function () {
+		var panel = $('#options').clone();
+	    $(this).prepend(panel);
+	    $(this).trigger('refresh');
+	});
+	$(":jqmData(role='page')").bind("pageshow", function () {
+		$(".flashMessage").hide();
+	});
+	$('#match').bind('pageshow', function () {
+		getData() 
+		ga_storage._trackPageview('/index', 'home Page');
+	});
 }
- 
-//$('#addScore').live('pageshow', function () { setupScore(); $("#addScoreForm").validate(); });
+
+$(document).bind("mobileinit", function () {
+	$.event.special.swipe.horizontalDistanceThreshold = Math.min($(document).width() / 2, 160);  
+    });
+$( document ).on( "swiperight", function() {
+	$('.options').panel( "open" );
+});
+
 
 

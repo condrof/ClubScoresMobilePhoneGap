@@ -1,23 +1,41 @@
 function singleCounty(county){
-	pageChange()
+	document.location.href = "#singleCounty"
+	$.mobile.loading( 'show', {
+		text: 'Loading Matches for ' + county,
+		textVisible: true,
+		theme: 'a',
+		html: ""
+	});
+	ga_storage._trackPageview('/index', 'single county');
 	var node = document.getElementById("singleCountyList").innerHTML=''
-		$.getJSON(
-				baseURL + '/api/counties/' + county,
-				function(jsonData) {
-				   var list=""
-				   document.getElementById("singleCountyHeader").innerHTML = jsonData.county.name
-				   for(i=0; i<jsonData.results.length; i++){
-					   matchId = jsonData.results[i].id
-					   var match = jsonData.results[i].team1 + " " + jsonData.results[i].score1 + " " + jsonData.results[i].team2 + " " + jsonData.results[i].score2
-					   list += "<li><h3><a href='#' data-prefetch onclick='goToSingleMatch(" + jsonData.results[i].id + ");'>" + match + "</h3>" + jsonData.results[i].date + "; Competition: " + jsonData.results[i].competition + "</a></li>"
-				
-				   }
-	               $("#singleCountyList").append( list ).listview("refresh");
-	              
+		$("#singleCountyHeader").text(county)
+		$.getJSON(baseURL + "/api/v2/counties/" + county,
+			function(jsonData) {
+				if(jsonData.result === "error"){
+					$(".flash").text(jsonData.results.message)
+					$(".flashMessage").show()
+				} else {
+				    var list=""
+				    	$.each(jsonData.results, function(i, field){
+				    		var date = new Date(i)
+							var showDate = date.getDay() + "/" + date.getMonth() + "/" + date.getFullYear()
+							list += "<li data-theme='a' data-role='list-divider' role='heading'><h1>" + showDate + "</h1></li>"
+				            for(i=0; i<field.length; i++){
+							   matchId = field[i].id
+							   var status = field[i].finished ? "Full Time" : "Latest"
+							   var match = field[i].team1 + " " + field[i].score1 + "<br />" + field[i].team2 + " " + field[i].score2
+							   list += "<li><a href='#' data-prefetch onclick='goToSingleMatch(" + field[i].id + ");'>" + match + "<br />Venue: " + field[i].venue + "<br />Throw In: "+ field[i].time + "<br />Status: " + status + "</a></li>"
+						    }
+				          });
+					    $("#singleCountyList").append( list ).listview("refresh");
+				}
 		})
-		.error(function(){ alert("ERROR. Could not retrieve information at this time") } )
-		.complete(function(){ $.mobile.loading( 'hide') } )
+		.complete(function(){ 
+			$( "#options" ).panel( "close" );
+			document.location.href = "#singleCounty"
+			$.mobile.loading( 'hide')
+		} )
 }
 
-//$('#singleCounty').live('pageshow', function () { pageChange() });
+$('#countiesPage').live('pageshow', function () { ga_storage._trackPageview('/index', 'counties'); });
 

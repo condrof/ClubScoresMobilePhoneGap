@@ -1,87 +1,153 @@
 <!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
 
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
-        <meta name="viewport" content="user-scalable=yes, initial-scale=1, maximum-scale=5, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <meta name="viewport" content="user-scalable=yes, initial-scale=1.3, maximum-scale=2, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" href="css/jquery.mobile-1.3.1.css" />
         
-        <link rel="stylesheet" href="css/jquery.mobile-1.2.0.css" />
-		<script type="text/javascript" src="js/index.js"></script>
-        <script src="js/jquery.js"></script>
-        <script src="js/jquery.validate.js"></script>
+		<script src="js/jquery.js"></script>
 		<script src="js/jquerymobile.js"></script>
+		<script src="js/jquery.validate.js"></script>
 		
 		<script>
 			//switch baseURL between test and live
-			var baseURL = "http://www.clubscores.ie"
+			//var baseURL = "http://www.clubscores.ie"
 			//var baseURL = "http://192.168.1.16:3000"
+			var baseURL = "http://csstaging.eu01.aws.af.cm/"
 			var matchId = 0;
 			var team1 = "";
 			var team2 = "";
-			
 		</script>
-	
-		<script type="text/javascript" charset="utf-8" src="cordova-2.3.0.js"></script>
+		
+		<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 		
 		<script src="js/index.js" ></script>
-		<script src="js/main.js" ></script>
-		<script src="js/camera.js" ></script>
-   		<script src="js/match.js" ></script>
-   		<script src="js/session.js" ></script>
-   		<script src="js/score.js" ></script>
-   		<script src="js/county.js" ></script>
-   				
+		<script src="main.js" ></script>
+		<script src="js/session.js" ></script>
+		<script src="js/match.js" ></script>
+		<script src="js/score.js" ></script>
+		<script src="js/county.js"></script>
+		<script src="js/search.js"></script>
+		<script src="js/camera.js"></script>
+				
 		<script type="text/javascript">
             app.initialize();
         </script>
 		        
-   		
-    </head>
-    <body onload="checkLogin(); getData()">
 
-<!----------------------------------MATCH ------------------------------------------------------>
-     
-        <div data-role="page" id="match"  class="page">
-			<div data-role="header" data-theme="b"  data-id="myheader">
-				<a data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
-				
+        <title>Club Scores</title>
+    </head>
+    <body onload="getData(); setupListener(); checkLogin()">
+    
+    <!-- ---------------------------Home Page -------------------- -->
+         <div data-role="page" id="match" class="page">
+         
+         <script>
+	         function closePanel(location){
+	        	 window.location=location;
+	          	$( "#options" ).panel( "close" );	       	 
+	         }
+         </script>
+         	<!-- defaultpanel  -->
+		    <div data-role="panel" id="options" class="options" data-animate="false" >
+		 
+		      <div class="panel-content">
+		      	<img src="img/logo.png" width="100%" onclick="closePanel('#match')" />
+		        <h2>@ClubScores</h2>
+		        <h3 class="loginButton">Welcome to the Club Scores GAA app</h3>
+		        <h3 class="logoutButton panelUser"></h3>
+		        <ul data-role="listview" class="panelList">
+		          
+		          <li data-role="list-divider" class="loginButton" data-theme="a"><h3>Login/Sign up</h3></li>
+		          <li class="loginButton" onclick="closePanel('#register')">Register</li>
+				  <li class="loginButton" onclick="closePanel('#login')">Login</li>
+				  
+				  <li data-role="list-divider" data-theme="a"><h3>Live Scores</h3></li>
+				  <li onclick="closePanel('#match')">Recent Matches</li>
+				  <li class="logoutButton" onclick="closePanel('#addMatch')">Add Match</li>
+				  <li onclick="closePanel('#searchPage')">Search For Match</li>
+				  <li onclick="closePanel('#countiesPage')">Counties</li>
+				  <li onclick="singleCounty('InterCounty')">Inter County</li>
+				  <li onclick="singleCounty('International')">International Results</li>				  
+				</ul>
+		        <a href="#demo-links" data-rel="close" data-role="button" data-icon="delete" data-inline="true">Close panel</a>
+		      </div><!-- /content wrapper for padding -->
+		 
+		    </div><!-- /defaultpanel -->
+         
+			<div data-role="header" data-theme="a"  data-id="myheader">
+				<a href="#options" data-icon="gear">Options</a>
 				<h1>Club Scores</h1>
 				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
-				<a href="#" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()" data-icon="delete">Logout</a>
+				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
 			</div><!-- /header -->
 		
-			<div data-role="content" id="content">	
+			<div data-role="content" id="content" data-theme="c">
+				<div data-role="header" class="flashMessage" data-theme="e" style="display:none">
+					<p class="flash" style="text-align:center"> </p>
+				</div>	
+		
+				<img src="img/logo.png" width="100%" onclick="getData()" />
+				
 				<div class="addMatchButton">
 					<a type="button" class="loggedIn addMatchButton" href="#addMatch" >Add Match</a>
 				</div>
-				<h1>Matches</h1>
-				<ul data-role="listview"  data-inset="true" id="matchlist">
+		
+				
+				<h1 id="matchHeader">Matches</h1>
+				<ul data-theme="c" data-role="listview"  data-inset="true" data-filter="true" id="matchlist">
 					
 				</ul>
 
 	
 			</div><!-- /content -->
 		
-			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
+			<div data-role="footer" data-id="myfooter" data-theme="a"  class="footerdiv" id="footerDiv">
 				
 			</div><!-- /footer -->
+			 
 		</div><!-- /page -->
+		
 		
 <!-----------------------------------SINGLE MATCH ---------------------------------------------->
 		
 		<div data-role="page" id="singlematch" class="page"  data-id="myheader">
-		
-			<div data-role="header" data-theme="b">
-				<a data-icon="home" class="ui-btn-left" onclick="getData()">Home</a> 
+			<div data-role="header" data-theme="a"  data-id="myheader">
+				<a data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
 				<h1>Club Scores</h1>
 				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
 				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
 			</div><!-- /header -->
 		
 			<div data-role="content" id="content">
-				<div class="addScoreButton">
-					<button id="addScoreButton" onClick="setupScore()">Add Score</button>
+				<div data-role="header" class="flashMessage" data-theme="e" style="display:none">
+					<p class="flash" style="text-align:center"> </p>
+				</div>	
+				
+				<div class="logoutButton">
+					<div data-role="controlgroup" data-type="horizontal">
+						<button id="addScoreButton" onClick="setupScore()">Add Score</button>
+						<button onclick="capturePhoto();">Add Photo</button>
+					</div>
 				</div>
 				
 				<h1 id="singleMatchTeam1">Team 1</h1>
@@ -90,6 +156,7 @@
 				<h2 id="singleMatchVenue">Venue</h2>
 				<h2 id="singleMatchDate">Date</h2>
 				<h2 id="singleMatchCompetition">Competition</h2>
+				<h2 id="singleMatchStatus">Status</h2>
 				
 				<ul data-role="listview"  data-inset="true" id="singleMatchList">
 					
@@ -103,19 +170,23 @@
 			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
 				
 			</div><!-- /footer -->
+			
 		</div><!-- /page -->
 		
 <!----------------------------------   Add Score    -------------------------------------------->
 		
 		<div data-role="page" id="addScore" class="page"  data-id="myheader">
-			<div data-role="header" data-theme="b">
-				<a data-icon="home" class="ui-btn-left" onClick="getData()">Home</a> 
+			<div data-role="header" data-theme="a"  data-id="myheader">
+				<a data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
 				<h1>Club Scores</h1>
 				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
 				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
 			</div><!-- /header -->
-				
+		
 			<div data-role="content" id="content">
+				<div data-role="header" class="flashMessage" data-theme="e" style="display:none">
+					<p class="flash" style="text-align:center"> </p>
+				</div>	
 			
 				 <form id="addScoreForm" action="#match" onsubmit="return false" data-ajax="false"> 
 				 	<div data-role="fieldcontain">
@@ -151,107 +222,35 @@
 		
 		
 		</div><!-- /page -->
+        
+        
+ <!----------------------------------   Add Match    -------------------------------------------->
 
-<!----------------------------------   Login    ------------------------------------------------>
-		
-		<div data-role="page" id="login" class="page"  data-id="myheader">
-
-			<div data-role="header" data-theme="b">
-				<a data-icon="home" class="ui-btn-left" onClick="getData()">Home</a>
-				<h1>Club Scores</h1>
-				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
-				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
-			</div><!-- /header -->
-		
-			<div data-role="content" id="content">	
-				<h1>Login</h1>
-				<form id="loginForm">
-				 <label for="username">Username:</label>
-    			 <input type="text" name="username" id="username" value=""  />
-    			
-    			 <label for="password">Password:</label>
-    			 <input type="password" name="password" id="password" value=""  />
-    			 
-    			  <a href="#matches" data-role="button" onclick="login()" data-transition="pop">Login</a> 
-				</form>
-				
-				<br />
-				<br />
-				<br />
-	
-			</div><!-- /content -->
-		
-			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
-				
-			</div><!-- /footer -->
-		</div><!-- /page -->
-		
-<!----------------------------------   Register    --------------------------------------------->
-		
-		<div data-role="page" id="register" class="page"  data-id="myheader">
-
-			<div data-role="header" data-theme="b">
-				<a data-icon="home" class="ui-btn-left" onClick="getData()">Home</a>
-				<h1>Club Scores</h1>
-				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
-				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
-			</div><!-- /header -->
-		
-			<div data-role="content" id="content">	
-				<h1>Register</h1>
-				<form id="register">
-				 <label for="regUsername">Username:</label>
-    			 <input type="text" name="regUsername" id="regUsername" value="" required />
-    			 
-    			 <label for="regEmail">Email:</label>
-    			 <input type="text" name="regEmail" id="regEmail" value="" required />
-    			
-    			 <label for="regPassword">Password:</label>
-    			 <input type="password" name="regPassword" id="regPassword" value="" required />
-    			 
-    			 <label for="regConfirmPassword">Password Confirmation:</label>
-    			 <input type="password" name="regConfirmPassword" id="regConfirmPassword" value="" required />
-    			 
-    			  <a href="#matches" data-role="button" onclick="register()" >Register</a>
-    			 </form>
-    			  
-    			  <br /><br /><br /><br /> 
-
-	
-			</div><!-- /content -->
-		
-			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
-				
-			</div><!-- /footer -->
-		</div><!-- /page -->
-
-<!----------------------------------   Add Match    -------------------------------------------->
-		
 		<div data-role="page" id="addMatch" class="page"  data-id="myheader">
-			<div data-role="header" data-theme="b">
-				<a data-icon="home" class="ui-btn-left" onClick="getData()">Home</a> 
+			<div data-role="header" data-theme="a"  data-id="myheader">
+				<a data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
 				<h1>Club Scores</h1>
 				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
 				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
 			</div><!-- /header -->
-				
+
 			<div data-role="content" id="content">	
-			
+
 				 <form id="addMatchForm" action="#match" onsubmit="return false" data-ajax="false"> 
 				 	<div data-role="fieldcontain">
 						<label for="addMatchTeam1">Team 1:</label>
 						<input type="text" name="addMatchTeam1" id="addMatchTeam1" value="" required />
 					</div>
-					
+
 					<div data-role="fieldcontain">
 						<label for="addMatchTeam2">Team 2</label>
 						<input type="text" name="addMatchTeam2" id="addMatchTeam2" value="" required />
 					</div>
-					
+
 					<div data-role="fieldcontain">
 					    <fieldset data-role="controlgroup">
 					        <legend>Date:</legend>
-					  
+
 					        <label for="select-choice-day">Day</label>
 					        <select name="select-choice-day" id="select-choice-day">
 					            <option value="01">01</option>
@@ -287,7 +286,7 @@
 					            <option value="31">31</option>
 					            <!-- etc. -->
 					        </select>
-					        
+
 					        <label for="select-choice-month">Month</label>
 					        <select name="select-choice-month" id="select-choice-month">
 					            <option value="01">January</option>
@@ -304,7 +303,7 @@
 					            <option value="12">December</option>
 					            <!-- etc. -->
 					        </select>
-					    
+
 					        <label for="select-choice-year">Year</label>
 					        <select name="select-choice-year" id="select-choice-year">
 					            <option value="2013">2013</option>
@@ -312,10 +311,10 @@
 					            <option value="2015">2015</option>
 					            <!-- etc. -->
 					        </select>
-					        
+
 					    </fieldset>
 					</div>
-					
+
 					<div data-role="fieldcontain">
 					<label for="time">Time:</label>
 						 <fieldset data-role="controlgroup" data-type="horizontal"> 
@@ -348,79 +347,24 @@
 							</select>
 							<select name="addMatchMinutes" id="addMatchMinutes">
 								<option value="00">00</option>
-								<option value="01">01</option>
-								<option value="02">02</option>
-								<option value="03">03</option>
-								<option value="04">04</option>
-								<option value="05">05</option>
-								<option value="06">06</option>
-								<option value="07">07</option>
-								<option value="08">08</option>
-								<option value="09">09</option>
-								<option value="10">10</option>
-								<option value="11">11</option>
-								<option value="12">12</option>
-								<option value="13">13</option>
-								<option value="14">14</option>
 								<option value="15">15</option>
-								<option value="16">16</option>
-								<option value="17">17</option>
-								<option value="18">18</option>
-								<option value="19">19</option>
-								<option value="20">20</option>
-								<option value="21">21</option>
-								<option value="22">22</option>
-								<option value="23">23</option>
-								<option value="24">24</option>
-								<option value="25">25</option>
-								<option value="26">26</option>
-								<option value="27">27</option>
-								<option value="28">28</option>
-								<option value="29">29</option>
 								<option value="30">30</option>
-								<option value="31">31</option>
-								<option value="32">32</option>
-								<option value="33">33</option>
-								<option value="34">34</option>
-								<option value="35">35</option>
-								<option value="36">36</option>
-								<option value="37">37</option>
-								<option value="38">38</option>
-								<option value="39">39</option>
-								<option value="40">40</option>
-								<option value="41">41</option>
-								<option value="42">42</option>
-								<option value="43">43</option>
-								<option value="44">44</option>
 								<option value="45">45</option>
-								<option value="46">46</option>
-								<option value="47">47</option>
-								<option value="48">48</option>
-								<option value="49">49</option>
-								<option value="50">50</option>
-								<option value="51">51</option>
-								<option value="52">52</option>
-								<option value="53">53</option>
-								<option value="54">54</option>
-								<option value="55">55</option>
-								<option value="56">56</option>
-								<option value="57">57</option>
-								<option value="58">58</option>
-								<option value="59">59</option>
+								
 							</select>
 						</fieldset>
 					</div>
-					
+
 					<div data-role="controlgroup">
 						<label for="venue">Venue:</label>
 						<input type="text" name="addMatchVenue" id="addMatchVenue" value="" required />
 					</div>
-					
+
 					<div data-role="controlgroup">
 						<label for="competition">Competition:</label>
 						<input type="text" name="addMatchCompetition" id="addMatchCompetition" value="" required />
 					</div>
-					
+
 					<div data-role="controlgroup">
 						<label for="competition">County:</label>
 						<select name="county" id="addMatchCounty">
@@ -459,49 +403,191 @@
 							<option value="Westmeath">Westmeath</option>
 							<option value="Wexford">Wexford</option>
 							<option value="Wicklow">Wicklow</option>
-							
+
 						</select>
 					</div>
-				 
+
 				 	<input id="addMatchSubmit" class="addMatchSubmit" type="submit" value="Add Match" onclick="addMatch()" />
-				 	
+
 				 </form> 
 			</div><!-- /content -->
 			<br /><br /><br /><br />
-			
-			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
-				
-			</div><!-- /footer -->
-		
-		
-		</div><!-- /page -->
-		
-<!----------------------------------- ALL COUNTIES --------------------------------------------->	
-		
-		<div data-role="page" id="counties"  class="page">
-			<div data-role="header" data-theme="b"  data-id="myheader">
+
+		</div><!-- /page -->       
+        
+        
+        <!-- --------------------Login Page ------------------------- -->
+        
+        <div data-role="page" id="login" class="page"  data-id="myheader">
+        	
+        	<div data-role="header" data-theme="a"  data-id="myheader">
 				<a data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
 				<h1>Club Scores</h1>
 				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
 				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
 			</div><!-- /header -->
+
+			<div data-role="content" id="content">
+				<div data-role="header" class="flashMessage" data-theme="e" style="display:none">
+					<p class="flash" style="text-align:center"> </p>
+				</div>	
+				<h1>Login</h1>
+				<form id="loginForm">
+				 <label for="username">Username:</label>
+    			 <input type="text" name="username" id="username" value=""  />
+    			
+    			 <label for="password">Password:</label>
+    			 <input type="password" name="password" id="password" value=""  />
+    			 
+    			  <a href="#matches" data-role="button" onclick="login()" data-transition="pop">Login</a> 
+				</form>
+				
+				<br />
+				<br />
+				<br />
+	
+			</div><!-- /content -->
 		
-			<div data-role="content" id="content">	
+			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
+				
+			</div><!-- /footer -->
+			
+		</div><!-- /page -->
+		
+		
+	<!-- ------------------Register Page -------------------------- -->
+	<div data-role="page" id="register" class="page"  data-id="myheader">
+			<div data-role="header" data-theme="a"  data-id="myheader">
+				<a data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
+				<h1>Club Scores</h1>
+				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
+				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
+			</div><!-- /header -->
+
+			<div data-role="content" id="content">
+				<div data-role="header" class="flashMessage" data-theme="e" style="display:none">
+					<p class="flash" style="text-align:center"> </p>
+				</div>	
+				
+				<h1>Register</h1>
+				<form id="register">
+				 <label for="regUsername">Username:</label>
+    			 <input type="text" name="regUsername" id="regUsername" value="" required />
+    			 
+    			 <label for="regEmail">Email:</label>
+    			 <input type="text" name="regEmail" id="regEmail" value="" required />
+    			
+    			 <label for="regPassword">Password:</label>
+    			 <input type="password" name="regPassword" id="regPassword" value="" required />
+    			 
+    			 <label for="regConfirmPassword">Password Confirmation:</label>
+    			 <input type="password" name="regConfirmPassword" id="regConfirmPassword" value="" required />
+    			 
+    			 <a data-role="button" onclick="register()" value="Register" >Register</a>
+    			 </form>
+    			  
+    			  <br /><br /><br /><br /> 
+
+	
+			</div><!-- /content -->
+		
+			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
+				
+			</div><!-- /footer -->
+		</div><!-- /page -->
+		
+	<!----------------------------------- SINGLE COUNTY -------------------------------------------->
+		
+		<div data-role="page" id="singleCounty"  class="page">
+			<div data-role="header" data-theme="a"  data-id="myheader">
+				<a data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
+				<h1>Club Scores</h1>
+				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
+				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
+			</div><!-- /header -->
+
+			<div data-role="content" id="content">
+				<div data-role="header" class="flashMessage" data-theme="e" style="display:none">
+					<p class="flash" style="text-align:center"> </p>
+				</div>	
+				
+				<h1 id="singleCountyHeader">County</h1>
+				<ul data-role="listview"  data-inset="true" id="singleCountyList">
+					
+				</ul>
+
+	
+			</div><!-- /content -->
+		
+			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
+				
+			</div><!-- /footer -->
+		</div><!-- /page -->
+		
+		
+		
+<!-- ------------------------Search Page ------------------------------ -->
+
+		<div data-role="page" id="searchPage"  class="page">
+			<div data-role="header" data-theme="a"  data-id="myheader">
+				<a data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
+				<h1>Club Scores</h1>
+				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
+				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
+			</div><!-- /header -->
+
+			<div data-role="content" id="content">
+				<div data-role="header" class="flashMessage" data-theme="e" style="display:none">
+					<p class="flash" style="text-align:center"> </p>
+				</div>	
+				
+				<h1 id="singleCountyHeader">Search</h1>
+				<input type="text" name="search" id="searchbasic" value="" />
+				<button onclick="search()">Search</button>
+				<ul data-role="listview"  data-inset="true" id="searchResults">
+					
+				</ul>
+
+	
+			</div><!-- /content -->
+		
+			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
+				
+			</div><!-- /footer -->
+		</div><!-- /page -->          
+		
+		
+<!----------------------------------- ALL COUNTIES --------------------------------------------->	
+		
+		<div data-role="page" id="countiesPage"  class="page">
+		
+			<div data-role="header" data-theme="a"  data-id="myheader">
+				<a data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
+				<h1>Club Scores</h1>
+				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
+				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
+			</div><!-- /header -->
+
+			<div data-role="content" id="content">
+				<div data-role="header" class="flashMessage" data-theme="e" style="display:none">
+					<p class="flash" style="text-align:center"> </p>
+				</div>	
+				
 				<h1>Counties</h1>
-				<ul data-role="listview"  data-inset="true" id="countieslist">
-					<li data-role="list-divider">Misc</li>
+				<ul data-role="listview" data-inset="true" id="countieslist">
+					<li data-role="list-divider" data-theme="a">Misc</li>
 					<li><a href="#singleCounty" onClick="singleCounty('InterCounty')">Inter County</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Colleges')">Colleges</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('International')">International</a></li>
 				
-					<li data-role="list-divider">Connacht</li>
+					<li data-role="list-divider" data-theme="a">Connacht</li>
 					<li><a href="#singleCounty" onClick="singleCounty('Galway')">Galway</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Leitrim')">Leitrim</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Mayo')">Mayo</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Roscommon')">Roscommon</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Sligo')">Sligo</a></li>
 					
-					<li data-role="list-divider">Munster</li>
+					<li data-role="list-divider" data-theme="a">Munster</li>
 					<li><a href="#singleCounty" onClick="singleCounty('Clare')">Clare</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Cork')">Cork</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Kerry')">Kerry</a></li>
@@ -509,7 +595,7 @@
 					<li><a href="#singleCounty" onClick="singleCounty('Tipperary')">Tipperary</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Waterford')">Waterford</a></li>
 					
-					<li data-role="list-divider">Ulster</li>
+					<li data-role="list-divider" data-theme="a">Ulster</li>
 					<li><a href="#singleCounty" onClick="singleCounty('Antrim')">Antrim</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Armagh')">Armagh</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Cavan')">Cavan</a></li>
@@ -520,7 +606,7 @@
 					<li><a href="#singleCounty" onClick="singleCounty('Monaghan')">Monaghan</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Tyrone')">Tyrone</a></li>
 					
-					<li data-role="list-divider">Leinster</li>
+					<li data-role="list-divider" data-theme="a">Leinster</li>
 					<li><a href="#singleCounty" onClick="singleCounty('Carlow')">Carlow</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Dublin')">Dublin</a></li>
 					<li><a href="#singleCounty" onClick="singleCounty('Kildare')">Kildare</a></li>
@@ -538,35 +624,21 @@
 	
 			</div><!-- /content -->
 		
-			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
+			<div data-role="footer" data-id="myfooter" class="footerdiv" id="footerDiv">
 				
 			</div><!-- /footer -->
 		</div><!-- /page -->
-		
-<!----------------------------------- SINGLE COUNTY -------------------------------------------->
-		
-		<div data-role="page" id="singleCounty"  class="page">
-			<div data-role="header" data-theme="b"  data-id="myheader">
-				<a data-icon="home" class="ui-btn-left" onclick="getData()">Home</a>
-				<h1>Club Scores</h1>
-				<a href="#login" data-icon="star" class="ui-btn-right loginButton" id="loginButton">Login</a>
-				<a href="#" data-icon="delete" class="ui-btn-right logoutButton" id="logoutButton" onclick="logout()">Logout</a>
-			</div><!-- /header -->
-		
-			<div data-role="content" id="content">	
-				<h1 id="singleCountyHeader">County</h1>
-				<ul data-role="listview"  data-inset="true" id="singleCountyList">
-					
-				</ul>
-
 	
-			</div><!-- /content -->
-		
-			<div data-role="footer" data-id="myfooter" data-theme="b"  class="footerdiv" id="footerDiv">
-				
-			</div><!-- /footer -->
-		</div><!-- /page -->
-
+     
+<!-- -----------------------Javascripts -------------------------------- -->   
+        
+    <script type="text/javascript" src="js/ga.js"></script>
+	<script>
+	    ga_storage._setAccount('UA-37296752-1'); //Replace with your own
+	    ga_storage._trackPageview('/index.html');
+	
+	</script>
+ 
         
     </body>
 </html>
